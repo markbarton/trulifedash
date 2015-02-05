@@ -1,10 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<div class="aside" tabindex="-1" role="dialog">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <div class="aside-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="aside-title" ng-bind-html="title"></h4>
+            </div>
+            <div class="aside-body">
+                <form class="well">
+                    <h3>Options</h3>
+                    <div class="form-group">
+                        <label for="byType">Type</label>
+                        <select ng-model="form.selectType" id="byType" ng-options="n.orderType for n in listByOrderType">
+                            <option value="">Select A Type</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="byHospital">Hospital</label>
+                        <select ng-model="form.selectHospital" id="byHospital" ng-options="n.hospital for n in listByOrderType">
+                            <option value="">Select A Hospital</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="byConsultant">Consultant</label>
+                        <select ng-model="form.selectConsultant" id="byConsultant" ng-options="n.consultant for n in listByOrderType">
+                            <option value="">Select A Consultant</option>
+                        </select>
+                    </div>
+                    <h3>Date Range</h3>
+                    <div class="form-group">
+                        <label for="startMonth">Start Month/Year</label>
+                        <select ng-model="form.selectStartMonth" id="startMonth" ng-options="n.consultant for n in listByOrderType">
+                            <option value="">Select A Start Month/Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endMonth">End Month/Year</label>
+                        <select ng-model="form.selectEndMonth" id="endMonth" ng-options="n.consultant for n in listByOrderType">
+                            <option value="">Select An End Month/Year</option>
+                        </select>
+                    </div>
 
-</body>
-</html>
+
+                </form>
+            </div>
+            <div class="aside-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+                <button type="button" ng-click="applyReportFilter()" class="btn btn-primary">Apply Filter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

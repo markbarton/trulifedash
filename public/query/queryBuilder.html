@@ -3,32 +3,31 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Trulife - Reporting Tool</title>
-
-
     <link href="../common/css/vendor/bootstrap.min.css" rel="stylesheet" />
     <link href="../common/css/vendor/wijmo.min.css" rel="stylesheet" />
+    <link href="../common/css/vendor/bootstrap-additions.min.css" rel="stylesheet" />
     <link href="../common/css/dashboard.css" rel="stylesheet" />
     <link href="../common/css/query.css" rel="stylesheet" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.3.8/angular-animate.min.js" data-semver="1.3.8"></script>
+    <script src="//code.angularjs.org/1.3.8/angular-sanitize.min.js" data-semver="1.3.8"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.tpl.min.js"></script>
     <script src="../vendor/wijmo.js" type="text/javascript"></script>
     <script src="../vendor/wijmo.chart.min.js" type="text/javascript"></script>
     <script src="../vendor/wijmo.gauge.min.js" type="text/javascript"></script>
     <script src="../vendor/wijmo.angular.min.js" type="text/javascript"></script>
     <style>
-        /* set default chart style */
-        .wj-flexchart {
-            height: 400px;
-            background-color: white;
-            box-shadow: 4px 4px 10px 0px rgba(50, 50, 50, 0.75);
-            padding: 8px;
-            margin-bottom: 12px;
-        }
-        .wj-radialgauge {
-            padding:4px;
-            width:100%;
-            height:200px;
-        }
+        .gaugeDash{overflow: hidden; border: 1px solid #f5f5f5;margin: 2px}
+        .gaugeDash:hover{background-color: #f5f5f5; border: 1px solid gainsboro}
+        .wrapper{padding: 10px}
+        .wj-gauge .wj-pointer {fill: #00b0f0}
+        .navbar-inverse{background-color:#009999 }
+        .navbar-inverse .navbar-nav>li>a {color: #ffffff}
+        .navbar-inverse .navbar-nav>li>a:hover {color: #9d9d9d}
+        .aside .aside-dialog .aside-header {background: #009999}
+        .aside-backdrop{opacity: 0.7}
     </style>
 </head>
 <body ng-controller="HomeController">
@@ -37,7 +36,7 @@
         <div class="navbar-header">
             <ul class="nav navbar-nav">
                 <li><img src="../common/images/trulife.jpg" style="margin-left:-20px; padding-right: 7px"/></li>
-                <li id="menu-toggle"><div class="hamburger-menu-wrapper"><div class="hamburger-menu"></div></div></li>
+                <li ng-click="showMenu()"><div class="hamburger-menu-wrapper"><div class="hamburger-menu"></div></div></li>
                             </ul>
 
 
@@ -45,6 +44,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li ng-click="showFilterForm()"><a href="#">Filter Form</a></li>
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="#">Settings</a></li>
                 <li><a href="#">Profile</a></li>
@@ -57,113 +57,72 @@
     </div>
 </nav>
 
-<div id="wrapper">
-
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="#">
-                    Menu
-                </a>
-            </li>
-            <li><a href="http://machurian-clients.co.uk/trulife/reportmockup.xls">Excel Mockup Report</a></li>
-            <li><a class="active" href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-        </ul>
-    </div>
-    <!-- /#sidebar-wrapper -->
-
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
+<div class="wrapper">
         <div class="container-fluid">
-            <div class="row">
-                <a href="#form-toggle" class="btn btn-default pull-right" id="form-toggle-button">Filter Form</a>
+            <h1>Reports Dashboard</h1>
+            <style type="text/css">
+                div.inline { float:left; width: 49%; border: 1px solid #e1dfdf; padding: 5px; margin: 3px}
+                div.inlineNarrow{ float:left; width: 18%}
+                .clearBoth { clear:both; }
+            </style>
+            <div class="inline"><h3>Sparkline Graph - 12 months totals</h3>
+                <table class="table">
+                    <thead><th>Order Type</th><th>12 Months</th><th>Total</th></thead>
+                    <tr ng-repeat="data in listByOrderType| orderBy:'total':'reverse'" class="ng-scope">{{data.dateData.total}}
+                        <td>{{data.orderType}}</td><td style="color:#0085c7" ng-bind-html="getSparklines(data.dateData, '200px', '15px')" class="ng-binding"></td><td>{{data.total}}</td>
+                    </tr>
+                </table></div>
+            <div class="inline pull-right">
+
+                <h3>Percentage of Orders Completed Ontime</h3>
+                <div class="inlineNarrow gaugeDash" ng-repeat="items in listByOrderType track by $index">
+                    <wj-radial-gauge
+                            value="items.percentageOntime"
+                            min="0"
+                            max="100"
+                            start-angle="-30"
+                            sweep-angle="240"
+                            show-ranges="true">
+                        <wj-range wj-property="pointer" thickness="0.5"></wj-range>
+                        <wj-range min="{{items.percentageOntime}}" max="100" color="rgba(255,100,100,.2)"></wj-range>
+                    </wj-radial-gauge>
+                    <h6 style="text-align: center; white-space: nowrap">{{items.orderType}}</h6>
+
+            </div></div>
+            <br class="clearBoth" /><!-- you may or may not need this -->
+
+                 <div class="row" style="border:1px solid #e1dfdf; margin: 3px">
                 <div class="col-lg-12">
 
-                   <div id="filter-form">
 
-                       <form>
-                           <h3>Options</h3>
-                           <div class="form-group">
-                               <label for="byType">Type</label>
-                               <select ng-model="form.selectType" id="byType" ng-options="n.orderType for n in listByOrderType">
-                                   <option value="">Select A Type</option>
-                               </select>
-                           </div>
-                           <div class="form-group">
-                               <label for="byHospital">Hospital</label>
-                               <select ng-model="form.selectHospital" id="byHospital" ng-options="n.hospital for n in listByOrderType">
-                                   <option value="">Select A Hospital</option>
-                               </select>
-                           </div>
-                           <div class="form-group">
-                               <label for="byConsultant">Consultant</label>
-                               <select ng-model="form.selectConsultant" id="byConsultant" ng-options="n.consultant for n in listByOrderType">
-                                   <option value="">Select A Consultant</option>
-                               </select>
-                           </div>
-                           <h3>Date Range</h3>
-                           <div class="form-group">
-                               <label for="startMonth">Start Month/Year</label>
-                               <select ng-model="form.selectStartMonth" id="startMonth" ng-options="n.consultant for n in listByOrderType">
-                                   <option value="">Select A Start Month/Year</option>
-                               </select>
-                           </div>
-                           <div class="form-group">
-                               <label for="endMonth">End Month/Year</label>
-                               <select ng-model="form.selectEndMonth" id="endMonth" ng-options="n.consultant for n in listByOrderType">
-                                   <option value="">Select An End Month/Year</option>
-                               </select>
-                           </div>
-
-                           <button type="submit" class="btn btn-default">Apply Filter</button>
-                       </form>
-                   </div>
-                    </div></div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Reports</h1>
                     <h2>All Orders By Type</h2>
-                    <wj-flex-chart style="height:900px" items-source="listAll" binding-x="orderType" selection-mode="Point" stacking="Stacked100pc">
+                    <wj-flex-chart chart-type="line" style="height:500px" items-source="listAll" binding-x="orderType" selection-mode="Point">
                         <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
-                        <wj-flex-chart-series binding="onttime" name="On Time"></wj-flex-chart-series>
-                        <wj-flex-chart-series binding="late" name="Late"></wj-flex-chart-series>
+                        <wj-flex-chart-series ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}" binding="onttime" name="On Time"></wj-flex-chart-series>
+                        <wj-flex-chart-series binding="late" ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"  name="Late"></wj-flex-chart-series>
                         <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
                     </wj-flex-chart>
-                    <div ng-repeat="data in listByOrderType"><h2>{{data.orderType}}</h2>
+                        </div>
+
+</div>
+            <div class="row hidden">
+                <div class="col-lg-4">
+                     <div ng-repeat="data in listByOrderType"><h2>{{data.orderType}}</h2>
                         <wj-flex-chart style="height:900px" items-source="data.dateData" binding-x="datekey" selection-mode="Point" stacking="Stacked100pc">
                             <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
                             <wj-flex-chart-series binding="ontime" name="On Time"></wj-flex-chart-series>
                             <wj-flex-chart-series binding="late" name="Late"></wj-flex-chart-series>
                             <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
                         </wj-flex-chart></div>
-
                 </div>
+
+
+
             </div>
-        </div>
-
-
-    </div>
-    <!-- /#page-content-wrapper -->
 
 
 
 
-<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    $("#form-toggle-button").click(function(e) {
-        e.preventDefault();
-        $("#filter-form").toggleClass("toggled");
-    });
-</script>
 
 <script src="../query/app.js"></script>
 <script src="../query/services/data.js"></script>
