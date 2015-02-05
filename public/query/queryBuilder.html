@@ -6,8 +6,11 @@
     <link href="../common/css/vendor/bootstrap.min.css" rel="stylesheet" />
     <link href="../common/css/vendor/wijmo.min.css" rel="stylesheet" />
     <link href="../common/css/vendor/bootstrap-additions.min.css" rel="stylesheet" />
+    <link href="../common/css/vendor/select.css" rel="stylesheet" />
     <link href="../common/css/dashboard.css" rel="stylesheet" />
     <link href="../common/css/query.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="//code.angularjs.org/1.3.8/angular-animate.min.js" data-semver="1.3.8"></script>
@@ -83,8 +86,9 @@
                             start-angle="-30"
                             sweep-angle="240"
                             show-ranges="true">
-                        <wj-range wj-property="pointer" thickness="0.5"></wj-range>
-                        <wj-range min="{{items.percentageOntime}}" max="100" color="rgba(255,100,100,.2)"></wj-range>
+                        <wj-range wj-property="pointer" thickness="0.75"></wj-range>
+                        <wj-range min="{{kpi}}" max="100" color="rgba(100,255,100,.2)"></wj-range>
+                        <wj-range min="{{items.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
                     </wj-radial-gauge>
                     <h6 style="text-align: center; white-space: nowrap">{{items.orderType}}</h6>
 
@@ -126,6 +130,7 @@
 
 <script src="../query/app.js"></script>
 <script src="../query/services/data.js"></script>
+<script src="../vendor/select.js"></script>
 
 </body>
 </html>

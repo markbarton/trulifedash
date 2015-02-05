@@ -2,10 +2,14 @@
  * Created by Mark on 09/01/2015.
  */
 
-var app = angular.module("queryApp",['wj','ngSanitize', 'mgcrea.ngStrap.modal', 'mgcrea.ngStrap.aside']);
+var app = angular.module("queryApp",['wj','ngSanitize', 'mgcrea.ngStrap.modal', 'mgcrea.ngStrap.aside','ui.select']);
 
 //home controller
 app.controller("HomeController",function($scope,DataFactory,$aside, $sce) {
+
+
+    $scope.selectedTypes = {};
+
 // Pre-fetch an external template populated with a custom scope
     var myAside = $aside({scope: $scope, template: '../query/filterForm.tpl.html', title: "Filtering form", content: "Please", show: false});
 
@@ -19,6 +23,8 @@ app.controller("HomeController",function($scope,DataFactory,$aside, $sce) {
 
     $scope.applyReportFilter = function(){
         console.log('i am in hte scope');
+        console.log($scope.selectedTypes.types);
+
     }
 
     $scope.loadData=function(){DataFactory.loadData().then(
@@ -32,7 +38,7 @@ app.controller("HomeController",function($scope,DataFactory,$aside, $sce) {
             // expose data as a CollectionView to get events
             $scope.listByOrderType = result.data.orderData;
             $scope.listAll = new wijmo.collections.CollectionView(result.data.orderData);
-            console.log($scope.listAll)
+            $scope.kpi=result.data.kpi;
 
             //Calculate Percentage
               $scope.anythingSummaryOnTime=onTime/(total/100);
@@ -82,6 +88,38 @@ app.controller("HomeController",function($scope,DataFactory,$aside, $sce) {
 
     $scope.loadData();
     })
+
+app.filter('propsFilter', function() {
+    return function(items, props) {
+        var out = [];
+
+        if (angular.isArray(items)) {
+            items.forEach(function(item) {
+                var itemMatches = false;
+
+                var keys = Object.keys(props);
+                for (var i = 0; i < keys.length; i++) {
+                    var prop = keys[i];
+                    var text = props[prop].toLowerCase();
+                    if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                        itemMatches = true;
+                        break;
+                    }
+                }
+
+                if (itemMatches) {
+                    out.push(item);
+                }
+            });
+        } else {
+            // Let the output be the input untouched
+            out = items;
+        }
+
+        return out;
+    };
+});
+
 
 
 

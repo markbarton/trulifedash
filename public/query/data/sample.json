@@ -4,6 +4,7 @@
   "percentageOnTime": 42.7108727450024,
   "percentageLate": 57.2891272549976,
   "ontime": 876,
+  "kpi":75,
   "late": 1175,
   "orderData": [
     {"orderType":"Anything else","total":598,"late":376,"percentageLate":62.876254180602,"onttime":222,"percentageOntime":37.123745819398,

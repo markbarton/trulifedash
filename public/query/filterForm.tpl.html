@@ -10,9 +10,12 @@
                     <h3>Options</h3>
                     <div class="form-group">
                         <label for="byType">Type</label>
-                        <select ng-model="form.selectType" id="byType" ng-options="n.orderType for n in listByOrderType">
-                            <option value="">Select A Type</option>
-                        </select>
+                        <ui-select multiple id="byType" ng-model="selectedTypes.types" theme="bootstrap" ng-disabled="disabled" close-on-select="false" style="width: 300px;" title="Choose types">
+                            <ui-select-match placeholder="Select types...">{{$item.orderType}}</ui-select-match>
+                            <ui-select-choices repeat="data in listByOrderType | filter:$select.search">
+                                {{data.orderType}}
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <div class="form-group">
                         <label for="byHospital">Hospital</label>
@@ -39,6 +42,9 @@
                             <option value="">Select An End Month/Year</option>
                         </select>
                     </div>
+
+
+
 
 
                 </form>
