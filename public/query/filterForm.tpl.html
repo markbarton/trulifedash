@@ -7,9 +7,22 @@
             </div>
             <div class="aside-body">
                 <form class="well">
-                    <h3>Options</h3>
-
-                    <div class="form-group">
+                    <h3>Filter Type</h3>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="selectedTypes.reportType" name="inlineRadioOptions" id="inlineRadio1" value="type" checked>  Type
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="selectedTypes.reportType" name="inlineRadioOptions" id="inlineRadio2" value="hospital"> Hospital
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="selectedTypes.reportType" name="inlineRadioOptions" id="inlineRadio3" value="consultant"> Consultant
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="selectedTypes.reportType" name="inlineRadioOptions" id="inlineRadio4" value="none"> None
+                    </label>
+                    <br />
+                    <br />
+                    <div ng-class="{chosenType: selectedTypes.reportType!='type'}" class="form-group">
                         <label>Type</label>
                         <ui-select multiple id="byType" ng-model="selectedTypes.types" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"
@@ -21,18 +34,18 @@
                         </ui-select>
                     </div>
 
-                    <div class="form-group">
+                    <div ng-class="{chosenType: selectedTypes.reportType!='hospital'}" class="form-group">
                         <label>Hospitals</label>
                         <ui-select multiple id="ByHospital" ng-model="selectedTypes.hospitals" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"
                                    title="Choose hospital">
-                            <ui-select-match placeholder="Select types...">{{$item}}</ui-select-match>
+                            <ui-select-match placeholder="Select hospitals...">{{$item}}</ui-select-match>
                             <ui-select-choices repeat="data in keywordsHospitals | filter:$select.search">
                                 {{data}}
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                    <div class="form-group">
+                    <div ng-class="{chosenType: selectedTypes.reportType!='consultant'}" class="form-group">
                         <label>Consultants</label>
                         <ui-select multiple id="ByConsultant" ng-model="selectedTypes.orthotists" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"

@@ -10,7 +10,7 @@ var queryApp = angular.module("queryApp",[
     'ui.select'
 ])
 
-.controller("HomeController",function($scope, DataFactory, KeywordsFactory, $aside, $sce) {
+.controller("HomeController",function($scope, DataFactory, KeywordsFactory, DataFilter, $aside, $sce) {
 
     $scope.selectedTypes = {};
 
@@ -34,7 +34,6 @@ var queryApp = angular.module("queryApp",[
 
     $scope.loadKeywords = function(){
         KeywordsFactory.loadKeywords().then(function success(result){
-            console.log(result.data.orthotists)
             $scope.keywordsHospitals=result.data.hospitals;
             $scope.keywordsOrderTypes=result.data.orderType;
             $scope.keywordsOrthotists=result.data.orthotists;

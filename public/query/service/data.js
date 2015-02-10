@@ -5,11 +5,10 @@ app.factory('DataFactory',function DataFactory($http){
         loadData:loadData
     }
 
-
     function loadData(){
         return $http({
             method: 'GET',
-            url: '../query/data/sample.json'
+            url: '../query/data/alltype.json'
         });
     }
 

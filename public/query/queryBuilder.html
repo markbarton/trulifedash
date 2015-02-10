@@ -81,18 +81,29 @@
                     </wj-flex-chart>
                         </div>
 
-    </div>
-            <div class="row hidden">
-                <div class="col-lg-4">
-                     <div ng-repeat="data in listByOrderType"><h2>{{data.orderType}}</h2>
-                        <wj-flex-chart style="height:900px" items-source="data.dateData" binding-x="datekey" selection-mode="Point" stacking="Stacked100pc">
-                            <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
-                            <wj-flex-chart-series binding="ontime" name="On Time"></wj-flex-chart-series>
-                            <wj-flex-chart-series binding="late" name="Late"></wj-flex-chart-series>
-                            <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
-                        </wj-flex-chart></div>
-                </div>
+    </div></div>
 
+
+
+
+
+
+            <div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.topData track by $index">
+            <wj-radial-gauge
+            value="results.percentageOntime"
+            min="0"
+            max="100"
+            start-angle="-30"
+            sweep-angle="240"
+            show-ranges="true">
+            <wj-range wj-property="pointer" thickness="0.75"></wj-range>
+            <wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>
+            <wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
+            </wj-radial-gauge>
+            <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
+
+            </div>
+            </div>
 
 
             </div>
@@ -104,6 +115,7 @@
 <script src="../query/app.js"></script>
 <script src="../query/service/data.js"></script>
 <script src="../query/service/keywords.js"></script>
+<script src="../query/factory/dataFilter.js"></script>
 <script src="../query/directives/tlSparkLines.js"></script>
 <script src="../vendor/select.js"></script>
 <script src="../common/directives/tfNavTabs.js"></script>
