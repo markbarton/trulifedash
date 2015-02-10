@@ -22,10 +22,11 @@ A default will be selected if the value is missing / blank
 <tr><td>ReportType</td><td>What type of Report</td><td><ul><li>ByOrder(default)</li><li>ByOrthotist</li><li>ByHospital</li></ul> </td></tr>
 <tr><td>DateType</td><td>Either grouped by Month or last 30 Days</td><td><ul><li>Month (Default)</li><li>30Days</li></ul></td></tr>
 <tr><td>OrderFilterList</td><td>Imploded list of Order Types - implode with @</td><td>If left blank all order types returned</td></tr>
-<tr><td>HospitalFilterList</td><td>Imploded list of Hospitals - implode with @ - only applicable for By Hospital Report Type</td><td>If left blank all Hospitals returned</td></tr>
-<tr><td>OrthotistFilterList</td><td>Imploded list of Orthotists - implode with @ - only applicable for By Orthotist Report Type</td><td>If left blank all Orthotists returned</td></tr>
+<tr><td>TopLevelFilterList</td><td>Imploded list of either Hospitals or Othotists/td></tr>
 <tr><td>StartDate</td><td>Month - Year String - taken from inital keyword data e.g. OCT - 2011</td><td>If left blank earliest date used</td></tr>
 <tr><td>EndDate</td><td>Month - Year String - taken from inital keyword data e.g. OCT - 2011</td><td>If left blank last date used</td></tr>
 <tr><td>ReportTitle</td><td>Only used if save is set to true - this will give the saved data a title</td><td>If left blank generic title used</td></tr>
-<tr><td>Save</td><td>If set to true then the JSON data will be saved along with the title</td><td>true = Save data.  Anything else is ignored</td></tr>
+<tr><td>Cache</td><td>If set to true then the JSON data will be saved along with the title</td><td>true = Save data.  Anything else is ignored</td></tr>
+<tr><td>Summary</td><td>Determines how much information is returned.  Does not speed up the report process other than reducing the size of the JSON data</td><td><ul><li>blank(default) everthing is returned</li><li>top = only return the top level summary information</li><li>order = return the order level information (only applicable for Hospitals / Orthothist</li></ul></td></tr>
+
 </table>
