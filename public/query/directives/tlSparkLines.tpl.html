@@ -1,0 +1,7 @@
+<div class="inline"><h3>Sparkline Graph - 12 months totals</h3>
+    <table class="table">
+        <thead><th>Order Type</th><th>12 Months</th><th>Total</th></thead>
+        <tr ng-repeat="data in listByOrderType| orderBy:'total':'reverse'" class="ng-scope">{{data.dateData.total}}
+            <td>{{data.orderType}}</td><td style="color:#0085c7" ng-bind-html="getSparklines(data.dateData, '200px', '15px')" class="ng-binding"></td><td>{{data.total}}</td>
+        </tr>
+    </table></div>

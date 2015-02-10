@@ -5209,7 +5209,7 @@ var wijmo;
     'use strict';
 
     /**
-    * Class that provides masking services to an HTMLInputElement.
+    * Class that provides masking service to an HTMLInputElement.
     */
     var _MaskProvider = (function () {
         /**

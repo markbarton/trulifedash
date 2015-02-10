@@ -8,49 +8,69 @@
             <div class="aside-body">
                 <form class="well">
                     <h3>Options</h3>
+
                     <div class="form-group">
-                        <label for="byType">Type</label>
-                        <ui-select multiple id="byType" ng-model="selectedTypes.types" theme="bootstrap" ng-disabled="disabled" close-on-select="false" style="width: 300px;" title="Choose types">
-                            <ui-select-match placeholder="Select types...">{{$item.orderType}}</ui-select-match>
-                            <ui-select-choices repeat="data in listByOrderType | filter:$select.search">
-                                {{data.orderType}}
+                        <label>Type</label>
+                        <ui-select multiple id="byType" ng-model="selectedTypes.types" theme="bootstrap"
+                                   ng-disabled="disabled" close-on-select="false"
+                                   title="Choose types">
+                            <ui-select-match placeholder="Select types...">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="data in keywordsOrderTypes | filter:$select.search">
+                                {{data}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hospitals</label>
+                        <ui-select multiple id="ByHospital" ng-model="selectedTypes.hospitals" theme="bootstrap"
+                                   ng-disabled="disabled" close-on-select="false"
+                                   title="Choose hospital">
+                            <ui-select-match placeholder="Select types...">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="data in keywordsHospitals | filter:$select.search">
+                                {{data}}
                             </ui-select-choices>
                         </ui-select>
                     </div>
                     <div class="form-group">
-                        <label for="byHospital">Hospital</label>
-                        <select ng-model="form.selectHospital" id="byHospital" ng-options="n.hospital for n in listByOrderType">
-                            <option value="">Select A Hospital</option>
-                        </select>
+                        <label>Consultants</label>
+                        <ui-select multiple id="ByConsultant" ng-model="selectedTypes.orthotists" theme="bootstrap"
+                                   ng-disabled="disabled" close-on-select="false"
+                                   title="Choose consualtant">
+                            <ui-select-match placeholder="Select consultants...">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="data in keywordsOrthotists | filter:$select.search">
+                                {{data}}
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
-                    <div class="form-group">
-                        <label for="byConsultant">Consultant</label>
-                        <select ng-model="form.selectConsultant" id="byConsultant" ng-options="n.consultant for n in listByOrderType">
-                            <option value="">Select A Consultant</option>
-                        </select>
-                    </div>
-                    <h3>Date Range</h3>
-                    <div class="form-group">
-                        <label for="startMonth">Start Month/Year</label>
-                        <select ng-model="form.selectStartMonth" id="startMonth" ng-options="n.consultant for n in listByOrderType">
-                            <option value="">Select A Start Month/Year</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="endMonth">End Month/Year</label>
-                        <select ng-model="form.selectEndMonth" id="endMonth" ng-options="n.consultant for n in listByOrderType">
-                            <option value="">Select An End Month/Year</option>
-                        </select>
-                    </div>
+                    <div class="form-inline">
 
-
-
+                        <div class="form-group">
+                            <label>Start Date</label><br />
+                            <ui-select ng-model="selectedTypes.startDate" theme="selectize" ng-disabled="disabled" style="width: 200px;">
+                                <ui-select-match placeholder="Select start date...">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="startDate in keywordsReportMonths | filter: $select.search">
+                                    <span ng-bind-html="startDate | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label><br />
+                            <ui-select ng-model="selectedTypes.endDate" theme="selectize" ng-disabled="disabled" style="width: 200px;">
+                                <ui-select-match placeholder="Select end date...">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="endDate in keywordsReportMonths | filter: $select.search">
+                                    <span ng-bind-html="endDate | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
 
 
                 </form>
             </div>
             <div class="aside-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+                <button type="button" class="btn btn-warning" ng-click="clearReportFilter()">Clear Filter</button>
                 <button type="button" ng-click="applyReportFilter()" class="btn btn-primary">Apply Filter</button>
             </div>
         </div>

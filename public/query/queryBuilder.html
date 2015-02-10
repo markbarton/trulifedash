@@ -34,33 +34,12 @@
     </style>
 </head>
 <body ng-controller="HomeController">
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <ul class="nav navbar-nav">
-                <li><img src="../common/images/trulife.jpg" style="margin-left:-20px; padding-right: 7px"/></li>
-                <li ng-click="showMenu()"><div class="hamburger-menu-wrapper"><div class="hamburger-menu"></div></div></li>
-                            </ul>
 
+    <tf-nav-tabs>
 
+    </tf-nav-tabs>
 
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li ng-click="showFilterForm()"><a href="#">Filter Form</a></li>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Help</a></li>
-            </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
-        </div>
-    </div>
-</nav>
-
-<div class="wrapper">
+    <div class="wrapper">
         <div class="container-fluid">
             <h1>Reports Dashboard</h1>
             <style type="text/css">
@@ -68,13 +47,7 @@
                 div.inlineNarrow{ float:left; width: 18%}
                 .clearBoth { clear:both; }
             </style>
-            <div class="inline"><h3>Sparkline Graph - 12 months totals</h3>
-                <table class="table">
-                    <thead><th>Order Type</th><th>12 Months</th><th>Total</th></thead>
-                    <tr ng-repeat="data in listByOrderType| orderBy:'total':'reverse'" class="ng-scope">{{data.dateData.total}}
-                        <td>{{data.orderType}}</td><td style="color:#0085c7" ng-bind-html="getSparklines(data.dateData, '200px', '15px')" class="ng-binding"></td><td>{{data.total}}</td>
-                    </tr>
-                </table></div>
+          <tl-spark-lines list-by-order-type="listByOrderType"></tl-spark-lines>
             <div class="inline pull-right">
 
                 <h3>Percentage of Orders Completed Ontime</h3>
@@ -92,10 +65,10 @@
                     </wj-radial-gauge>
                     <h6 style="text-align: center; white-space: nowrap">{{items.orderType}}</h6>
 
-            </div></div>
-            <br class="clearBoth" /><!-- you may or may not need this -->
-
-                 <div class="row" style="border:1px solid #e1dfdf; margin: 3px">
+            </div>
+         </div>
+         <br class="clearBoth" /><!-- you may or may not need this -->
+         <div class="row" style="border:1px solid #e1dfdf; margin: 3px">
                 <div class="col-lg-12">
 
 
@@ -108,7 +81,7 @@
                     </wj-flex-chart>
                         </div>
 
-</div>
+    </div>
             <div class="row hidden">
                 <div class="col-lg-4">
                      <div ng-repeat="data in listByOrderType"><h2>{{data.orderType}}</h2>
@@ -129,8 +102,11 @@
 
 
 <script src="../query/app.js"></script>
-<script src="../query/services/data.js"></script>
+<script src="../query/service/data.js"></script>
+<script src="../query/service/keywords.js"></script>
+<script src="../query/directives/tlSparkLines.js"></script>
 <script src="../vendor/select.js"></script>
+<script src="../common/directives/tfNavTabs.js"></script>
 
 </body>
 </html>
