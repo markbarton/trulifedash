@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html ng-app="queryApp">
+<html >
 <head lang="en">
     <meta charset="UTF-8">
     <title>Trulife - Reporting Tool</title>
@@ -33,7 +33,7 @@
         .aside-backdrop{opacity: 0.7}
     </style>
 </head>
-<body ng-controller="HomeController">
+<body ng-app="queryApp" ng-controller="HomeController">
 
     <tf-nav-tabs>
 
@@ -115,6 +115,7 @@
 <script src="../query/app.js"></script>
 <script src="../query/service/data.js"></script>
 <script src="../query/service/keywords.js"></script>
+<script src="../query/service/domino.js"></script>
 <script src="../query/factory/dataFilter.js"></script>
 <script src="../query/directives/tlSparkLines.js"></script>
 <script src="../vendor/select.js"></script>
