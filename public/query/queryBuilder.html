@@ -1,14 +1,14 @@
 <!DOCTYPE html >
-<html >
+<html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Trulife - Reporting Tool</title>
-    <link href="../common/css/vendor/bootstrap.min.css" rel="stylesheet" />
-    <link href="../common/css/vendor/wijmo.min.css" rel="stylesheet" />
-    <link href="../common/css/vendor/bootstrap-additions.min.css" rel="stylesheet" />
-    <link href="../common/css/vendor/select.css" rel="stylesheet" />
-    <link href="../common/css/dashboard.css" rel="stylesheet" />
-    <link href="../common/css/query.css" rel="stylesheet" />
+    <link href="../common/css/vendor/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../common/css/vendor/wijmo.min.css" rel="stylesheet"/>
+    <link href="../common/css/vendor/bootstrap-additions.min.css" rel="stylesheet"/>
+    <link href="../common/css/vendor/select.css" rel="stylesheet"/>
+    <link href="../common/css/dashboard.css" rel="stylesheet"/>
+    <link href="../common/css/query.css" rel="stylesheet"/>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -22,94 +22,200 @@
     <script src="../vendor/wijmo.gauge.min.js" type="text/javascript"></script>
     <script src="../vendor/wijmo.angular.min.js" type="text/javascript"></script>
     <style>
-        .gaugeDash{overflow: hidden; border: 1px solid #f5f5f5;margin: 2px}
-        .gaugeDash:hover{background-color: #f5f5f5; border: 1px solid gainsboro}
-        .wrapper{padding: 10px}
-        .wj-gauge .wj-pointer {fill: #00b0f0}
-        .navbar-inverse{background-color:#009999 }
-        .navbar-inverse .navbar-nav>li>a {color: #ffffff}
-        .navbar-inverse .navbar-nav>li>a:hover {color: #9d9d9d}
-        .aside .aside-dialog .aside-header {background: #009999}
-        .aside-backdrop{opacity: 0.7}
+        .gaugeDash {
+            overflow: hidden;
+            border: 1px solid #f5f5f5;
+            margin: 2px
+        }
+
+        .gaugeDash:hover {
+            background-color: #f5f5f5;
+            border: 1px solid gainsboro
+        }
+
+        .wrapper {
+            padding: 10px
+        }
+
+        .wj-gauge .wj-pointer {
+            fill: #00b0f0
+        }
+
+        .navbar-inverse {
+            background-color: #009999
+        }
+
+        .navbar-inverse .navbar-nav > li > a {
+            color: #ffffff
+        }
+
+        .navbar-inverse .navbar-nav > li > a:hover {
+            color: #9d9d9d
+        }
+
+        .aside .aside-dialog .aside-header {
+            background: #009999
+        }
+
+        .aside-backdrop {
+            opacity: 0.7
+        }
+
+        div.inline {
+            float: left;
+            width: 49%;
+            border: 1px solid #e1dfdf;
+            padding: 5px;
+            margin: 3px
+        }
+
+        div.inlineNarrow {
+            float: left;
+            width: 18%
+        }
+
+        .clearBoth {
+            clear: both;
+        }
     </style>
 </head>
 <body ng-app="queryApp" ng-controller="HomeController">
 
-    <tf-nav-tabs>
+<tf-nav-tabs></tf-nav-tabs>
 
-    </tf-nav-tabs>
+<div class="wrapper">
+    <div class="container-fluid" ng-hide="resultData" id="landingDash">
+        <h1>Reports Dashboard</h1>
+        <tl-spark-lines list-by-order-type="listByOrderType"></tl-spark-lines>
+        <div class="inline pull-right">
 
-    <div class="wrapper">
-        <div class="container-fluid">
-            <h1>Reports Dashboard</h1>
-            <style type="text/css">
-                div.inline { float:left; width: 49%; border: 1px solid #e1dfdf; padding: 5px; margin: 3px}
-                div.inlineNarrow{ float:left; width: 18%}
-                .clearBoth { clear:both; }
-            </style>
-          <tl-spark-lines list-by-order-type="listByOrderType"></tl-spark-lines>
-            <div class="inline pull-right">
+            <h3>Percentage of Orders Completed Ontime</h3>
 
-                <h3>Percentage of Orders Completed Ontime</h3>
-                <div class="inlineNarrow gaugeDash" ng-repeat="items in listByOrderType track by $index">
-                    <wj-radial-gauge
-                            value="items.percentageOntime"
-                            min="0"
-                            max="100"
-                            start-angle="-30"
-                            sweep-angle="240"
-                            show-ranges="true">
-                        <wj-range wj-property="pointer" thickness="0.75"></wj-range>
-                        <wj-range min="{{kpi}}" max="100" color="rgba(100,255,100,.2)"></wj-range>
-                        <wj-range min="{{items.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
-                    </wj-radial-gauge>
-                    <h6 style="text-align: center; white-space: nowrap">{{items.orderType}}</h6>
+            <div class="inlineNarrow gaugeDash" ng-repeat="items in listByOrderType track by $index">
+                <wj-radial-gauge
+                        value="items.percentageOntime"
+                        min="0"
+                        max="100"
+                        start-angle="-30"
+                        sweep-angle="240"
+                        show-ranges="true">
+                    <wj-range wj-property="pointer" thickness="0.75"></wj-range>
+                    <wj-range min="{{kpi}}" max="100" color="rgba(100,255,100,.2)"></wj-range>
+                    <wj-range min="{{items.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
+                </wj-radial-gauge>
+                <h6 style="text-align: center; white-space: nowrap">{{items.orderType}}</h6>
 
             </div>
-         </div>
-         <br class="clearBoth" /><!-- you may or may not need this -->
-         <div class="row" style="border:1px solid #e1dfdf; margin: 3px">
-                <div class="col-lg-12">
+        </div>
+        <br class="clearBoth"/><!-- you may or may not need this -->
+        <div class="row" style="border:1px solid #e1dfdf; margin: 3px">
+            <div class="col-lg-12">
 
 
-                    <h2>All Orders By Type</h2>
-                    <wj-flex-chart chart-type="line" style="height:500px" items-source="listAll" binding-x="orderType" selection-mode="Point">
-                        <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
-                        <wj-flex-chart-series ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}" binding="onttime" name="On Time"></wj-flex-chart-series>
-                        <wj-flex-chart-series binding="late" ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"  name="Late"></wj-flex-chart-series>
-                        <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
-                    </wj-flex-chart>
-                        </div>
+                <h2>All Orders By Type</h2>
+                <wj-flex-chart chart-type="line" style="height:500px" items-source="listAll" binding-x="orderType"
+                               selection-mode="Point">
+                    <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
+                    <wj-flex-chart-series ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
+                                          binding="onttime" name="On Time"></wj-flex-chart-series>
+                    <wj-flex-chart-series binding="late"
+                                          ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                          name="Late"></wj-flex-chart-series>
+                    <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
+                </wj-flex-chart>
+            </div>
 
-    </div></div>
+        </div>
+    </div>
+    <div class="container-fluid" ng-show="resultData" id="queryDash">
+        <h1>Custom Reports</h1>
 
-
-
-
-
-
+        <div id="summaryReportData" class="hidden">
+            <h3>Summary Report Data
+                <small>Precentage of Orders Ontime</small>
+            </h3>
+            <div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.orderData track by $index">
+                <wj-radial-gauge
+                        value="results.percentageOntime"
+                        min="0"
+                        max="100"
+                        start-angle="-30"
+                        sweep-angle="240"
+                        show-ranges="true">
+                    <wj-range wj-property="pointer" thickness="0.75"></wj-range>
+                    <wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>
+                    <wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
+                </wj-radial-gauge>
+                <h6 style="text-align: center; white-space: nowrap">{{results.orderType}}</h6>
+            </div>
             <div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.topData track by $index">
-            <wj-radial-gauge
-            value="results.percentageOntime"
-            min="0"
-            max="100"
-            start-angle="-30"
-            sweep-angle="240"
-            show-ranges="true">
-            <wj-range wj-property="pointer" thickness="0.75"></wj-range>
-            <wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>
-            <wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
-            </wj-radial-gauge>
+                <wj-radial-gauge
+                        value="results.percentageOntime"
+                        min="0"
+                        max="100"
+                        start-angle="-30"
+                        sweep-angle="240"
+                        show-ranges="true">
+                    <wj-range wj-property="pointer" thickness="0.75"></wj-range>
+                    <wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>
+                    <wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
+                </wj-radial-gauge>
+                <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
+            </div>
+        </div>
+    </div>
+    <div id="summaryPlusReportData" class="hidden">
+        <h3>Summary Plus Report Data</h3>
+
+        <div ng-repeat="results in resultData.topData track by $index">
+
+            <wj-flex-chart style="height:300px" items-source="results.dateData" binding-x="datekey"
+                           selection-mode="Point" stacking="Stacked">
+                <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
+                <wj-flex-chart-series binding="ontime"
+                                      ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
+                                      name="On time"></wj-flex-chart-series>
+                <wj-flex-chart-series binding="late"
+                                      ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                      name="Late"></wj-flex-chart-series>
+                <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
+            </wj-flex-chart>
+
             <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
-
-            </div>
-            </div>
+        </div>
 
 
-            </div>
+        <!--<h6>Showing results for:</h6>-->
+        <!--<ul>Hospitals<br /><li  ng-repeat="h in formObj.TopLevelFilterList">{{h}}</li></ul>-->
+        <!--<div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.topData track by $index">-->
+        <!--<wj-radial-gauge-->
+        <!--value="results.percentageOntime"-->
+        <!--min="0"-->
+        <!--max="100"-->
+        <!--start-angle="-30"-->
+        <!--sweep-angle="240"-->
+        <!--show-ranges="true">-->
+        <!--<wj-range wj-property="pointer" thickness="0.75"></wj-range>-->
+        <!--<wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>-->
+        <!--<wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>-->
+        <!--</wj-radial-gauge>-->
+        <!--<h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>-->
+        <!--</div>-->
+        <!--</div>-->
 
+    </div>
+    <div>
+        <div ng-repeat="results in resultData.topData">
+            {{results}}
+            <wj-flex-chart binding-x="datekey" binding="total" chart-type="Area" stacking="Stacked" legend-toggle="true">
 
+                <wj-flex-chart-series ng-repeat="c in results.orders" items-source="c.dateData" ></wj-flex-chart-series>
 
+            </wj-flex-chart>
+        </div>
+    </div>
+
+</div>
 
 
 <script src="../query/app.js"></script>

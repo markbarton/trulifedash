@@ -2,7 +2,7 @@
  * Created by Mark on 09/01/2015.
  */
 
-var queryApp = angular.module("queryApp",[
+var queryApp = angular.module("queryApp", [
     'wj',
     'ngSanitize',
     'mgcrea.ngStrap.modal',
@@ -12,61 +12,79 @@ var queryApp = angular.module("queryApp",[
 ])
 
 
-.controller("HomeController",function($scope, DataFactory, KeywordsFactory, DataFilter, $aside, $sce,DominoFactory) {
+    .controller("HomeController", function ($scope, DataFactory, KeywordsFactory, DataFilter, $aside, $sce, DominoFactory) {
 
-    $scope.selectedTypes = {};
 
-    $scope.loadData=function(){
-        DataFactory.loadData().then(function success(result){
-            var onTime=0;
-            var total=0;
-            for (var i = 0; i < result.data.length; i++) {
-                 onTime+= result.data[i].OnTime;
-                total+=result.data[i].Total;
-            }
-            // expose data as a CollectionView to get events
-            $scope.listByOrderType = result.data.orderData;
-            $scope.listAll = new wijmo.collections.CollectionView(result.data.orderData);
-            $scope.kpi=result.data.kpi;
+        $scope.loadData = function () {
+            DataFactory.loadData().then(function success(result) {
+                var onTime = 0;
+                var total = 0;
+                for (var i = 0; i < result.data.length; i++) {
+                    onTime += result.data[i].OnTime;
+                    total += result.data[i].Total;
+                }
+                // expose data as a CollectionView to get events
+                $scope.listByOrderType = result.data.orderData;
+                $scope.listAll = new wijmo.collections.CollectionView(result.data.orderData);
+                $scope.kpi = result.data.kpi;
 
-            //Calculate Percentage
-              $scope.anythingSummaryOnTime=onTime/(total/100);
-        })
-    };
+                //Calculate Percentage
+                $scope.anythingSummaryOnTime = onTime / (total / 100);
+            })
+        };
 
-    $scope.loadKeywords = function(){
-        KeywordsFactory.loadKeywords().then(function success(result){
-            $scope.keywordsHospitals=result.data.hospitals;
-            $scope.keywordsOrderTypes=result.data.orderType;
-            $scope.keywordsOrthotists=result.data.orthotists;
-            $scope.keywordsReportMonths=result.data.reportMonths;
-        })
-    }
+        $scope.loadKeywords = function () {
+            KeywordsFactory.loadKeywords().then(function success(result) {
+                $scope.keywordsHospitals = result.data.hospitals;
+                $scope.keywordsOrderTypes = result.data.orderType;
+                $scope.keywordsOrthotists = result.data.orthotists;
+                $scope.keywordsReportMonths = result.data.reportMonths;
+            })
+        }
 
-    $scope.loadData();
-    $scope.loadKeywords();
-    //$scope.loadHospitalData();
-    //$scope.loadOthordistData();
+        $scope.clearResult = function () {
+            $scope.resultData="";
+            $scope.formObj={};
+            $scope.setDefaults();
+        }
 
-        $scope.formObj={}
+        $scope.setDefaults = function(){
+            $scope.formObj = {}
+            $scope.formObj.Summary="Summary";
+            $scope.formObj.ReportType="ByOrder";
+            $scope.formObj.DateType="Month";
+        }
+        $scope.loadData();
+        $scope.setDefaults();
+        $scope.loadKeywords();
 
-        $scope.postQuery=function(){
+
+
+
+        $scope.postQuery = function () {
+            //
+            //if($scope.formObj.ReportType=='ByOrder' && $scope.formObj.OrderFilterList.length == 0 ){
+            //    alert('bad type');
+            //    return false
+            //}else if( $scope.formObj.TopLevelFilterList.length == 0 ){
+            //    alert('bad other type');
+            //    return false
+            //}
 
             //Because we are dealing with Domino & CORS we cant use the REST API because of the limit of 3 headers in the website rules
             //So we have converted to the old fashioned POST method
             //One problem with this is multi value fields so we need to implode them
-            if($scope.formObj.OrderFilterList ){
-                $scope.formObj.OrderFilterListImp=$scope.formObj.OrderFilterList.join("@")
+            if ($scope.formObj.OrderFilterList) {
+                $scope.formObj.OrderFilterListImp = $scope.formObj.OrderFilterList.join("@")
             }
 
-            if($scope.formObj.TopLevelFilterList ){
-                $scope.formObj.TopLevelFilterListImp=$scope.formObj.TopLevelFilterList.join("@")
+            if ($scope.formObj.TopLevelFilterList) {
+                $scope.formObj.TopLevelFilterListImp = $scope.formObj.TopLevelFilterList.join("@")
             }
 
-            DominoFactory.postOptions($scope.formObj).then(function (success){
-                $scope.result=""
-                $scope.result=success.data;
-
+            DominoFactory.postOptions($scope.formObj).then(function (success) {
+                $scope.resultData = "";
+                $scope.resultData = success.data;
 
                 /*  //Now call the Agent to process it - passing the UNID as the arguement
                  DominoFactory.runQueryAgent(unid).then(function(success){
@@ -77,12 +95,12 @@ var queryApp = angular.module("queryApp",[
 
     });
 
-queryApp.filter('propsFilter', function() {
-    return function(items, props) {
+queryApp.filter('propsFilter', function () {
+    return function (items, props) {
         var out = [];
 
         if (angular.isArray(items)) {
-            items.forEach(function(item) {
+            items.forEach(function (item) {
                 var itemMatches = false;
 
                 var keys = Object.keys(props);

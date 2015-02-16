@@ -14,7 +14,7 @@
 
                     <label for="radios-0" class="radio-inline">
                         <input type="radio" name="radios2" id="radios-0" value="Summary"
-                               ng-model="formObj.Summary" checked="checked">
+                               ng-model="formObj.Summary">
                         Summary
                     </label>
 
@@ -44,13 +44,13 @@
                     </label>
                     <label class="radio-inline">
                         <input type="radio" ng-model="formObj.ReportType" name="inlineRadioOptions"
-                               id="inlineRadio3" value="ByOrthotist"> Consultant
+                               id="inlineRadio3" value="ByOrthotist"> Orthotist
                     </label>
                     <br/>
                     <br/>
 
                     <div class="form-group">
-                        <label>Type</label>
+                        <label>Type <small ng-class="{hidden: formObj.Summary=='All' && formObj.ReportType!='ByOrder'}">This is ignored when combined unless report type is 'All'</small></label>
                         <ui-select multiple id="byType" ng-model="formObj.OrderFilterList" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"
                                    title="Choose types">
@@ -89,7 +89,7 @@
 
 
                         <label class="radio-inline" for="radios-10">
-                            <input type="radio" name="radios3" id="radios-10" value="Month" ng-model="formObj.DateType" checked="checked">
+                            <input type="radio" name="radios3" id="radios-10" value="Month" ng-model="formObj.DateType">
                             Month
                         </label>
                         <label class="radio-inline" for="radios-11">
@@ -98,7 +98,7 @@
                         </label>
                     </div>
 
-                    <div class="form-inline">
+                    <div class="form-inline" ng-class="{hidden: formObj.DateType!='Month'}">
 
                         <div class="form-group">
                             <label>Start Date</label><br/>
@@ -128,8 +128,9 @@
             </div>
             <div class="aside-footer">
                 <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
-                <button type="button" class="btn btn-warning" ng-click="clearReportFilter()">Clear Filter</button>
-                <button type="button" ng-click="postQuery()" class="btn btn-primary">Apply Filter</button>
+                <button type="button" ng-click="clearResult()" class="btn btn-danger">Clear Form</button>
+                <button type="button" ng-click="postQuery();$hide()" class="btn btn-primary">Apply Filter</button>
+
                 <!--<button type="button" ng-click="applyReportFilter()" class="btn btn-primary">Apply Filter</button>-->
             </div>
         </div>
