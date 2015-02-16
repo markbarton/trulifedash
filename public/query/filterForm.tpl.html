@@ -18,14 +18,6 @@
                         Summary
                     </label>
 
-
-                    <label class="radio-inline" for="radios-1">
-                        <input type="radio" name="radios2" id="radios-1" value="Summary+"
-                               ng-model="formObj.Summary">
-                        Summary+ (only applicable for Hospital / Otho)
-                    </label>
-
-
                     <label class="radio-inline" for="radios-2">
                         <input type="radio" name="radios2" id="radios-2" value="All"
                                ng-model="formObj.Summary">
@@ -49,8 +41,8 @@
                     <br/>
                     <br/>
 
-                    <div class="form-group">
-                        <label>Type <small ng-class="{hidden: formObj.Summary=='All' && formObj.ReportType!='ByOrder'}">This is ignored when combined unless report type is 'All'</small></label>
+                    <div  ng-class="{chosenType: formObj.ReportType!='ByOrder'}" class="form-group">
+                        <label>Type</label>
                         <ui-select multiple id="byType" ng-model="formObj.OrderFilterList" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"
                                    title="Choose types">

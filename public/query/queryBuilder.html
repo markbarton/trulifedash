@@ -205,39 +205,43 @@
 
     </div>
     <div>
-        <div ng-repeat="results in resultData.topData track by $index">
-
-            <wj-flex-chart style="height:300px" items-source="results.dateData" binding-x="datekey"
-                           selection-mode="Point" stacking="Stacked">
+        <div ng-repeat="results in resultData.topData track by $index" class="row">
+            <div class="col-lg-8">
+                <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
+                <wj-flex-chart style="height:300px" items-source="results.dateData" binding-x="datekey"
+                selection-mode="Point" stacking="Stacked">
                 <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
 
                 <wj-flex-chart-series binding="ontime"
-                                      ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
-                                      name="On time"></wj-flex-chart-series>
+                ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
+                name="On time"></wj-flex-chart-series>
                 <wj-flex-chart-series binding="late"
-                                      ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                                      name="Late"></wj-flex-chart-series>
+                ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                name="Late"></wj-flex-chart-series>
                 <wj-flex-chart-series binding="target" chart-type="LineSymbols"
-                                      ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                                      name="Target"></wj-flex-chart-series>
+                ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                name="Target"></wj-flex-chart-series>
 
                 <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
-            </wj-flex-chart>
+                </wj-flex-chart>
+            </div>
+            <div class="col-lg-4">
+                <wj-flex-pie items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
+            </div>
 
-            <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
+        </div>
+
     </div>
 
-</div>
 
-
-<script src="../query/app.js"></script>
-<script src="../query/service/data.js"></script>
-<script src="../query/service/keywords.js"></script>
-<script src="../query/service/domino.js"></script>
-<script src="../query/factory/dataFilter.js"></script>
-<script src="../query/directives/tlSparkLines.js"></script>
-<script src="../vendor/select.js"></script>
-<script src="../common/directives/tfNavTabs.js"></script>
+    <script src="../query/app.js"></script>
+    <script src="../query/service/data.js"></script>
+    <script src="../query/service/keywords.js"></script>
+    <script src="../query/service/domino.js"></script>
+    <script src="../query/factory/dataFilter.js"></script>
+    <script src="../query/directives/tlSparkLines.js"></script>
+    <script src="../vendor/select.js"></script>
+    <script src="../common/directives/tfNavTabs.js"></script>
 
 </body>
 </html>
