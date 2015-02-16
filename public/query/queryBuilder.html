@@ -175,9 +175,9 @@
                 <wj-flex-chart-series binding="ontime"
                                       ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
                                       name="On time"></wj-flex-chart-series>
-                <wj-flex-chart-series binding="late"
+                <wj-flex-chart-series binding="{{kpi}}"
                                       ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                                      name="Late"></wj-flex-chart-series>
+                                      name="KPI"></wj-flex-chart-series>
                 <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
             </wj-flex-chart>
 
@@ -205,14 +205,26 @@
 
     </div>
     <div>
-        <div ng-repeat="results in resultData.topData">
-            {{results}}
-            <wj-flex-chart binding-x="datekey" binding="total" chart-type="Area" stacking="Stacked" legend-toggle="true">
+        <div ng-repeat="results in resultData.topData track by $index">
 
-                <wj-flex-chart-series ng-repeat="c in results.orders" items-source="c.dateData" ></wj-flex-chart-series>
+            <wj-flex-chart style="height:300px" items-source="results.dateData" binding-x="datekey"
+                           selection-mode="Point" stacking="Stacked">
+                <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
 
+                <wj-flex-chart-series binding="onttime"
+                                      ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
+                                      name="On time"></wj-flex-chart-series>
+                <wj-flex-chart-series binding="late"
+                                      ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                      name="Late"></wj-flex-chart-series>
+                <wj-flex-chart-series binding="target" chart-type="LineSymbols"
+                                      ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                      name="Target"></wj-flex-chart-series>
+
+                <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
             </wj-flex-chart>
-        </div>
+
+            <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
     </div>
 
 </div>
