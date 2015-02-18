@@ -12,7 +12,7 @@ app.factory('DominoFactory',function DominoFactory($http){
     function postOptions(optionsData){
         return $http({
             method: 'POST',
-            url: 'http://virtualplace.co.uk/org/orderconfig.nsf/DashboardOptions?createdocument',
+            url: 'http://31.49.241.8/org/orderconfig.nsf/DashboardOptions?createdocument',
             data:optionsData
         });
     }
@@ -22,7 +22,7 @@ app.factory('DominoFactory',function DominoFactory($http){
         console.log("unid = " + unid)
         return $http({
             method: 'GET',
-            url:'http://virtualplace.co.uk/org/orderconfig.nsf/Report2?openagent&unid='+unid
+            url:'http://31.49.241.8/org/orderconfig.nsf/Report2?openagent&unid='+unid
         });
     }
 
