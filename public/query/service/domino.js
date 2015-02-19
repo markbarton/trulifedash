@@ -6,7 +6,9 @@ app.factory('DominoFactory',function DominoFactory($http){
 
     return{
         postOptions:postOptions,
-        runQueryAgent:runQueryAgent
+        runQueryAgent:runQueryAgent,
+        getKeywordData:getKeywordData,
+        runCachedReport:runCachedReport
     }
 
     function postOptions(optionsData){
@@ -17,12 +19,25 @@ app.factory('DominoFactory',function DominoFactory($http){
         });
     }
 
-
     function runQueryAgent(unid){
-        console.log("unid = " + unid)
         return $http({
             method: 'GET',
             url:'http://31.49.241.8/org/orderconfig.nsf/Report2?openagent&unid='+unid
+        });
+    }
+
+
+    function getKeywordData(){
+        return $http({
+            method: 'GET',
+            url:'http://31.49.241.8/org/orderconfig.nsf/DashboardKeywordData'
+        });
+    }
+
+    function runCachedReport(u){
+        return $http({
+            method: 'GET',
+            url:'http://31.49.241.8/'+u
         });
     }
 

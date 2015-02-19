@@ -39,4 +39,61 @@
     width: 40em
 }
 .chosenType{visibility: hidden;position:fixed;margin: 0 auto;top: 51px;width: 300px }
-.red{color: red}
+
+.gaugeDash {
+    overflow: hidden;
+    border: 1px solid #f5f5f5;
+    margin: 2px
+}
+
+.gaugeDash:hover {
+    background-color: #f5f5f5;
+    border: 1px solid gainsboro
+}
+
+.wrapper {
+    padding: 10px
+}
+
+.wj-gauge .wj-pointer {
+    fill: #00b0f0
+}
+
+.navbar-inverse {
+    background-color: #009999
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #ffffff
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    color: #9d9d9d
+}
+
+.aside .aside-dialog .aside-header {
+    background: #009999
+}
+
+.aside-backdrop {
+    opacity: 0.7
+}
+
+div.inline {
+    float: left;
+    width: 49%;
+    border: 1px solid #e1dfdf;
+    padding: 5px;
+    margin: 3px
+}
+
+div.inlineNarrow {
+    float: left;
+    width: 18%
+}
+
+.clearBoth {
+    clear: both;
+}
+#summaryReportData{padding: 10px}
+#summaryReportData, #allReportData{padding: 10px}

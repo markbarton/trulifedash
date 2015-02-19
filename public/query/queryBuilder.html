@@ -24,63 +24,6 @@
     <script src="../vendor/wijmo.gauge.min.js" type="text/javascript"></script>
     <script src="../vendor/wijmo.angular.min.js" type="text/javascript"></script>
     <script src="../vendor/loading-bar.js" type="text/javascript"></script>
-    <style>
-        .gaugeDash {
-            overflow: hidden;
-            border: 1px solid #f5f5f5;
-            margin: 2px
-        }
-
-        .gaugeDash:hover {
-            background-color: #f5f5f5;
-            border: 1px solid gainsboro
-        }
-
-        .wrapper {
-            padding: 10px
-        }
-
-        .wj-gauge .wj-pointer {
-            fill: #00b0f0
-        }
-
-        .navbar-inverse {
-            background-color: #009999
-        }
-
-        .navbar-inverse .navbar-nav > li > a {
-            color: #ffffff
-        }
-
-        .navbar-inverse .navbar-nav > li > a:hover {
-            color: #9d9d9d
-        }
-
-        .aside .aside-dialog .aside-header {
-            background: #009999
-        }
-
-        .aside-backdrop {
-            opacity: 0.7
-        }
-
-        div.inline {
-            float: left;
-            width: 49%;
-            border: 1px solid #e1dfdf;
-            padding: 5px;
-            margin: 3px
-        }
-
-        div.inlineNarrow {
-            float: left;
-            width: 18%
-        }
-
-        .clearBoth {
-            clear: both;
-        }
-    </style>
 </head>
 <body ng-app="queryApp" ng-controller="HomeController">
 
@@ -131,12 +74,20 @@
         </div>
     </div>
     <div class="container-fluid" ng-show="resultData" id="queryDash">
-        <h1>Custom Reports</h1>
+          <div class="well"><strong>Your report is showing you:</strong>
 
-        <div id="summaryReportData" class="hidden">
-            <h3>Summary Report Data
-                <small>Precentage of Orders Ontime</small>
-            </h3>
+                <span >{{formObj.Summary}} data </span>
+                <span ng-show="formObj.ReportType=='ByOrder'" >by order type</span>
+                <span ng-show="formObj.ReportType=='ByHospital'" >by hospital</span>
+                <span ng-show="formObj.ReportType=='ByOrthotist'" >by orthotist</span>
+                <span ng-show="formObj.DateType=='Month'" >for the date range {{formObj.StartDate}} - {{formObj.Enddate}}</span>
+                <span ng-show="formObj.DateType=='30Days'" >for the last 30 days</span>
+            </div>
+            <span></span>
+        </div>
+
+        <div id="summaryReportData" ng-show="formObj.Summary=='Summary'">
+            <h3>Percentage of Orders Ontime</h3>
             <div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.orderData track by $index">
                 <wj-radial-gauge
                         value="results.percentageOntime"
@@ -167,71 +118,45 @@
             </div>
         </div>
     </div>
-    <div id="summaryPlusReportData" class="hidden">
-        <h3>Summary Plus Report Data</h3>
 
-        <div ng-repeat="results in resultData.topData track by $index">
-
-            <wj-flex-chart style="height:300px" items-source="results.dateData" binding-x="datekey"
-                           selection-mode="Point" stacking="Stacked">
-                <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
-                <wj-flex-chart-series binding="ontime"
-                                      ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
-                                      name="On time"></wj-flex-chart-series>
-                <wj-flex-chart-series binding="{{kpi}}"
-                                      ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                                      name="KPI"></wj-flex-chart-series>
-                <wj-flex-chart-legend position="Bottom"></wj-flex-chart-legend>
-            </wj-flex-chart>
-
-            <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
-        </div>
-
-
-
-    </div>
-    <div>
+    <div ng-show="formObj.Summary=='All'" id="allReportData">
         <div ng-repeat="results in resultData.topData track by $index" class="row">
+            <h3 style="text-align: center; white-space: nowrap">{{results.item}}</h3>
             <div class="col-lg-8">
-                <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
-                <wj-flex-chart style="height:300px" items-source="results.dateData" binding-x="datekey"
-                selection-mode="Point" stacking="Stacked">
-                <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
-                <!--<wj-flex-chart-axis wj-property="axisY" position="Right" min="0" max="100" ></wj-flex-chart-axis>-->
 
+                <wj-flex-chart style="height:500px" items-source="results.dateData" binding-x="datekey"
+                               selection-mode="Point" stacking="Stacked">
+                    <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
+                    <wj-flex-chart-series binding="ontime"
+                                          ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
+                                          name="On time"></wj-flex-chart-series>
+                    <wj-flex-chart-series binding="late"
+                                          ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                          name="Late"></wj-flex-chart-series>
+                    <wj-flex-chart-series binding="target" chart-type="LineSymbols"
+                                          ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                          name="Target"></wj-flex-chart-series>
 
-                <wj-flex-chart-series binding="ontime"
-                ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
-                name="On time"></wj-flex-chart-series>
-                <wj-flex-chart-series binding="late"
-                ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                name="Late"></wj-flex-chart-series>
-                <wj-flex-chart-series binding="target" chart-type="LineSymbols"
-                ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                name="Target"></wj-flex-chart-series>
-
-                <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
+                    <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
                 </wj-flex-chart>
             </div>
             <div class="col-lg-4">
-                <wj-flex-pie items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
+                <wj-flex-pie style="height:500px" items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
             </div>
 
         </div>
 
 
     </div>
-    <tl-axis-chart></tl-axis-chart>
 
-    <script src="../query/app.js"></script>
-    <script src="../query/service/data.js"></script>
-    <script src="../query/service/keywords.js"></script>
-    <script src="../query/service/domino.js"></script>
-    <script src="../query/factory/dataFilter.js"></script>
-    <script src="../query/directives/tlSparkLines.js"></script>
-    <script src="../query/directives/tlAxisChart.js"></script>
-    <script src="../vendor/select.js"></script>
-    <script src="../common/directives/tfNavTabs.js"></script>
+</div>
+<script src="../query/app.js"></script>
+<script src="../query/service/data.js"></script>
+<script src="../query/service/domino.js"></script>
+<script src="../query/factory/dataFilter.js"></script>
+<script src="../query/directives/tlSparkLines.js"></script>
+<script src="../vendor/select.js"></script>
+<script src="../common/directives/tfNavTabs.js"></script>
 
 </body>
 </html>
