@@ -13,11 +13,11 @@ var queryApp = angular.module("queryApp", [
 ])
 
 
-    .controller("HomeController", function ($scope, DataFactory, DataFilter, $aside, $sce, DominoFactory) {
+    .controller("HomeController", function ($scope, DataFactory, DataFilter, $aside, $sce, DominoFactory, $timeout) {
 
         // data context
 
-
+        $scope.dateAlertMessage = false;
         $scope.loadData = function () {
             DataFactory.loadData().then(function success(result) {
                 var onTime = 0;
@@ -47,8 +47,16 @@ var queryApp = angular.module("queryApp", [
         }
 
         $scope.runCachedReport = function (i) {
+            $scope.clearResult();
             DominoFactory.runCachedReport($scope.cachedReports[i].url).then(function success(result) {
-                console.log(result.data)
+                console.log($scope.cachedReports[i]);
+                $scope.reportTitle=$scope.cachedReports[i].title;
+                if($scope.cachedReports[i].summary='All'){
+                    $scope.formObj.Summary='All';
+                }else{
+                    $scope.formObj.Summary='Summary';
+                }
+                $scope.resultData=result.data;
             });
         }
         $scope.clearResult = function () {
@@ -66,10 +74,23 @@ var queryApp = angular.module("queryApp", [
         $scope.loadData();
         $scope.setDefaults();
         $scope.loadKeywords();
-        $scope.flashMessage = 'not much';
 
 
         $scope.postQuery = function () {
+            $scope.dateAlertMessage=false;
+            if($scope.formObj.StartDate && !$scope.formObj.EndDate){
+                $scope.dateAlertMessage=true;
+                $timeout(function () { $scope.dateAlertMessage = false; }, 3000);
+                $scope.showFilterForm();
+                return false;
+            }
+            if(!$scope.formObj.StartDate && $scope.formObj.EndDate){
+                $scope.dateAlertMessage=true;
+                $timeout(function () { $scope.dateAlertMessage = false; }, 3000);
+                $scope.showFilterForm();
+                return false;
+            }
+
 
             //Because we are dealing with Domino & CORS we cant use the REST API because of the limit of 3 headers in the website rules
             //So we have converted to the old fashioned POST method
