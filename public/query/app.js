@@ -13,35 +13,19 @@ var queryApp = angular.module("queryApp", [
 ])
 
 
-    .controller("HomeController", function ($scope, DataFactory, DataFilter, $aside, $sce, DominoFactory, $timeout) {
+    .controller("HomeController", function ($scope,  $aside, $sce, DominoFactory, $timeout) {
 
         // data context
 
         $scope.dateAlertMessage = false;
         $scope.typeAlertMessage = false;
-        $scope.spkLineOrder==true;
-        $scope.spkLineHospital==false;
-        $scope.spkLineOrthotist==false;
-        $scope.loadData = function () {
-            DataFactory.loadData().then(function success(result) {
-                var onTime = 0;
-                var total = 0;
-                for (var i = 0; i < result.data.length; i++) {
-                    onTime += result.data[i].OnTime;
-                    total += result.data[i].Total;
-                }
-                // expose data as a CollectionView to get events
-                //$scope.listByOrderType = result.data.orderData;
-                $scope.listAll = new wijmo.collections.CollectionView(result.data.orderData);
-                $scope.kpi = result.data.kpi;
-
-                //Calculate Percentage
-                $scope.anythingSummaryOnTime = onTime / (total / 100);
-            })
-        };
+        $scope.spkLineOrder == true;
+        $scope.spkLineHospital == false;
+        $scope.spkLineOrthotist == false;
 
         $scope.loadKeywords = function () {
             DominoFactory.getKeywordData().then(function success(result) {
+                $scope.kpi=result.data.kpi;
                 $scope.keywordsHospitals = result.data.hospitals;
                 $scope.keywordsOrderTypes = result.data.orderType;
                 $scope.keywordsOrthotists = result.data.orthotists;
@@ -66,34 +50,34 @@ var queryApp = angular.module("queryApp", [
         $scope.runHomePageCachedReport = function (i) {
             DominoFactory.runHomePageCachedReport($scope.cachedReports[i].url).then(function success(result) {
                 $scope.reportTitle = $scope.cachedReports[i].title;
-                if($scope.cachedReports[i].reportType=='ByOrder'){
-                    $scope.listByOrderType=result.data.topData;
-                }else if($scope.cachedReports[i].reportType=='ByHospital'){
-                    $scope.listByHospital=result.data.topData;
-                }else if($scope.cachedReports[i].reportType=='ByOrthotist'){
-                    $scope.listByOrthotist=result.data.topData;
+                if ($scope.cachedReports[i].reportType == 'ByOrder') {
+                    $scope.listByOrderType = result.data.topData;
+                } else if ($scope.cachedReports[i].reportType == 'ByHospital') {
+                    $scope.listByHospital = result.data.topData;
+                } else if ($scope.cachedReports[i].reportType == 'ByOrthotist') {
+                    $scope.listByOrthotist = result.data.topData;
                 }
-                $scope.spkLineData=$scope.listByOrderType;
-                $scope.spkLineOrder=true;
+                $scope.spkLineData = $scope.listByOrderType;
+                $scope.spkLineOrder = true;
             });
         }
 
-        $scope.spkLineToggle = function(i){
-            $scope.spkLineOrder=false;
-            $scope.spkLineHospital=false;
-            $scope.spkLineOrthotist=false;
-            if(i==0){
-                $scope.spkLineData=$scope.listByOrderType;
-                $scope.spkLineOrder=true;
-            }else if(i==1){
-                $scope.spkLineData=$scope.listByHospital;
-                $scope.spkLineHospital=true;
+        $scope.spkLineToggle = function (i) {
+            $scope.spkLineOrder = false;
+            $scope.spkLineHospital = false;
+            $scope.spkLineOrthotist = false;
+            $scope.spkLineData = {};
+            if (i == 0) {
+                $scope.spkLineData = $scope.listByOrderType;
+                $scope.spkLineOrder = true;
+            } else if (i == 1) {
+                $scope.spkLineData = $scope.listByHospital;
+                $scope.spkLineHospital = true;
 
-            }else if(i==2){
-                $scope.spkLineData=$scope.listByOrthotist;
-                $scope.spkLineOrthotist=true;
+            } else if (i == 2) {
+                $scope.spkLineData = $scope.listByOrthotist;
+                $scope.spkLineOrthotist = true;
             }
-
         };
 
         $scope.clearResult = function () {
@@ -108,7 +92,7 @@ var queryApp = angular.module("queryApp", [
             $scope.formObj.ReportType = "ByOrder";
             $scope.formObj.DateType = "Month";
         }
-        $scope.loadData();
+
         $scope.setDefaults();
         $scope.loadKeywords();
 
@@ -158,7 +142,6 @@ var queryApp = angular.module("queryApp", [
             DominoFactory.postOptions($scope.formObj).then(function (success) {
                 $scope.resultData = "";
                 $scope.reportTitle = "";
-                console.log($scope.formObj)
                 $scope.resultData = success.data;
             })
         }

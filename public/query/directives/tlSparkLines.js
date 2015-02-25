@@ -12,6 +12,7 @@ app.directive('tlSparkLines', function ($sce) {
         link: function link(scope, element, attrs) {
 
             scope.getSparklines = function (data, width, height) {
+                //console.log('S: '+data)
                 var rtn = new Array();
                 for (var i = 0; i < data.length; i++) {
                     rtn.push(data[i].total);

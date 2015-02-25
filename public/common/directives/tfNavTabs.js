@@ -1,7 +1,7 @@
 /**
  * Created by StevenChapman on 10/02/15.
  */
-app.directive('tfNavTabs', function ($aside, DataFilter) {
+app.directive('tfNavTabs', function ($aside) {
 
     return {
         restrict: "E",
@@ -28,22 +28,7 @@ app.directive('tfNavTabs', function ($aside, DataFilter) {
                     placement: "left"
                 });
             };
-
-            scope.applyReportFilter = function () {
-                DataFilter.add(scope.selectedTypes).then(function success(result){
-                    scope.resultData={};
-                   console.log('success')
-                   console.log(result.data)
-                    scope.resultData=result.data;
-                });
-
-            };
-
-            scope.clearReportFilter = function () {
-                scope.selectedTypes = {};
-
-            }
-        }
+                   }
 
     };
 

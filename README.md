@@ -32,7 +32,6 @@ A default will be selected if the value is missing / blank
 </table>
 
 
-# To do
-Change angular gauges as we change sparklines
+
 
 
