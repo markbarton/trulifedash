@@ -14,15 +14,15 @@ var queryApp = angular.module("queryApp", [
 
 
     .controller("HomeController", function ($scope,  $aside, $sce, DominoFactory, $timeout) {
-
-        // data context
-
+        //Set up defaults
         $scope.dateAlertMessage = false;
         $scope.typeAlertMessage = false;
         $scope.spkLineOrder == true;
         $scope.spkLineHospital == false;
         $scope.spkLineOrthotist == false;
 
+
+        //Load keyword repirts to get hospitals, orthotists, types and standard reports.
         $scope.loadKeywords = function () {
             DominoFactory.getKeywordData().then(function success(result) {
                 $scope.kpi=result.data.kpi;
@@ -39,6 +39,7 @@ var queryApp = angular.module("queryApp", [
             })
         }
 
+        //runs the cached repirts saved in domio db
         $scope.runCachedReport = function (i) {
             $scope.clearResult();
             DominoFactory.runCachedReport($scope.cachedReports[i].url).then(function success(result) {
@@ -47,6 +48,7 @@ var queryApp = angular.module("queryApp", [
             });
         }
 
+        //Run the cacahed domio reports from the tabs on homepage. Also swaps tabs
         $scope.runHomePageCachedReport = function (i) {
             DominoFactory.runHomePageCachedReport($scope.cachedReports[i].url).then(function success(result) {
                 $scope.reportTitle = $scope.cachedReports[i].title;
@@ -62,6 +64,7 @@ var queryApp = angular.module("queryApp", [
             });
         }
 
+        //Toggles spark line data and tab status
         $scope.spkLineToggle = function (i) {
             $scope.spkLineOrder = false;
             $scope.spkLineHospital = false;
@@ -80,12 +83,14 @@ var queryApp = angular.module("queryApp", [
             }
         };
 
+        //Clears form
         $scope.clearResult = function () {
             $scope.resultData = "";
             $scope.formObj = {};
             $scope.setDefaults();
         }
 
+        //Sets form defaults
         $scope.setDefaults = function () {
             $scope.formObj = {}
             $scope.formObj.Summary = "All";
@@ -97,7 +102,9 @@ var queryApp = angular.module("queryApp", [
         $scope.loadKeywords();
 
 
+        //Called from filter form to run a report
         $scope.postQuery = function () {
+            //Form validation
             $scope.dateAlertMessage = false;
             if ($scope.formObj.StartDate && !$scope.formObj.EndDate) {
                 $scope.dateAlertMessage = true;
