@@ -1,16 +1,15 @@
 /**
  * Created by StevenChapman on 10/02/15.
  */
-app.directive('tlSparkLines', function($sce) {
+app.directive('tlSparkLines', function ($sce) {
 
     return {
         restrict: "E",
         scope: {
-            listByOrderType:'=listByOrderType'
+            listByOrderType: '=listByOrderType'
         },
         templateUrl: '../query/directives/tlSparkLines.tpl.html',
-        link: function link(scope, element, attrs)
-        {
+        link: function link(scope, element, attrs) {
 
             scope.getSparklines = function (data, width, height) {
                 var rtn = new Array();
@@ -27,7 +26,12 @@ app.directive('tlSparkLines', function($sce) {
                 for (var i = 1; i < rtn.length; i++) {
                     x2 = Math.round((i) / (rtn.length - 1) * 100);
                     y2 = scaleY(rtn[i], min, max);
+                    if (isNaN(y2) == true) {
+                        y2 = 0;
+                        y1 = 0;
+                    }
                     svg += '<line x1=' + x1 + '% y1=' + y1 + '% x2=' + x2 + '% y2=' + y2 + '% />';
+
                     x1 = x2;
                     y1 = y2;
                 }

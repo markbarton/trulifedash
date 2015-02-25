@@ -9,23 +9,23 @@
                 <form class="well">
 
 
-                    <h3>Report Type</h3>
+                    <!--<h3>Report Type</h3>-->
 
 
-                    <label for="radios-0" class="radio-inline">
-                        <input type="radio" name="radios2" id="radios-0" value="Summary"
-                               ng-model="formObj.Summary">
-                        Summary
-                    </label>
+                    <!--<label for="radios-0" class="radio-inline">-->
+                        <!--<input type="radio" name="radios2" id="radios-0" value="Summary"-->
+                               <!--ng-model="formObj.Summary">-->
+                        <!--Summary-->
+                    <!--</label>-->
 
-                    <label class="radio-inline" for="radios-2">
-                        <input type="radio" name="radios2" id="radios-2" value="All"
-                               ng-model="formObj.Summary">
-                        All
-                    </label>
+                    <!--<label class="radio-inline" for="radios-2">-->
+                        <!--<input type="radio" name="radios2" id="radios-2" value="All"-->
+                               <!--ng-model="formObj.Summary">-->
+                        <!--All-->
+                    <!--</label>-->
 
 
-                    <h3>Filter Type</h3>
+                    <h3>Filter</h3>
                     <label class="radio-inline">
                         <input type="radio" ng-model="formObj.ReportType" name="inlineRadioOptions"
                                id="inlineRadio1" value="ByOrder" checked> Type
@@ -43,7 +43,7 @@
 
                     <div  ng-class="{chosenType: formObj.ReportType!='ByOrder'}" class="form-group">
                         <label>Type</label>
-                        <ui-select multiple id="byType" ng-model="formObj.OrderFilterList" theme="bootstrap"
+                        <ui-select multiple id="byType" ng-model="formObj.TopLevelFilterList" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"
                                    title="Choose types">
                             <ui-select-match placeholder="Select types...">{{$item}}</ui-select-match>
@@ -67,6 +67,57 @@
                     <div ng-class="{chosenType: formObj.ReportType!='ByOrthotist'}" class="form-group">
                         <label>Consultants</label>
                         <ui-select multiple id="ByConsultant" ng-model="formObj.TopLevelFilterList" theme="bootstrap"
+                                   ng-disabled="disabled" close-on-select="false"
+                                   title="Choose consualtant">
+                            <ui-select-match placeholder="Select consultants...">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="data in keywordsOrthotists | filter:$select.search">
+                                {{data}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+<h3>Filter Level Two</h3>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="formObj.AdditionalReportType" name="inlineRadioOptionsAdditional"
+                               id="inlineRadio1_1" value="ByOrder" checked> Type
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="formObj.AdditionalReportType" name="inlineRadioOptionsAdditional"
+                               id="inlineRadio2_1" value="ByHospital"> Hospital
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="formObj.AdditionalReportType" name="inlineRadioOptionsAdditional"
+                               id="inlineRadio3_1" value="ByOrthotist"> Orthotist
+                    </label>
+                    <br/>
+                    <br/>
+
+                    <div  ng-class="{chosenType: formObj.AdditionalReportType!='ByOrder'}" class="form-group">
+                        <label>Type</label>
+                        <ui-select multiple id="byType" ng-model="formObj.AdditionalTopLevelFilterList" theme="bootstrap"
+                                   ng-disabled="disabled" close-on-select="false"
+                                   title="Choose types">
+                            <ui-select-match placeholder="Select types...">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="data in keywordsOrderTypes | filter:$select.search">
+                                {{data}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+
+                    <div ng-class="{chosenType: formObj.AdditionalReportType!='ByHospital'}" class="form-group">
+                        <label>Hospitals</label>
+                        <ui-select multiple id="ByHospital" ng-model="formObj.AdditionalTopLevelFilterList" theme="bootstrap"
+                                   ng-disabled="disabled" close-on-select="false"
+                                   title="Choose hospital">
+                            <ui-select-match placeholder="Select hospitals...">{{$item}}</ui-select-match>
+                            <ui-select-choices repeat="data in keywordsHospitals | filter:$select.search">
+                                {{data}}
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div ng-class="{chosenType: formObj.AdditionalReportType!='ByOrthotist'}" class="form-group">
+                        <label>Consultants</label>
+                        <ui-select multiple id="ByConsultant" ng-model="formObj.AdditionalTopLevelFilterList" theme="bootstrap"
                                    ng-disabled="disabled" close-on-select="false"
                                    title="Choose consualtant">
                             <ui-select-match placeholder="Select consultants...">{{$item}}</ui-select-match>

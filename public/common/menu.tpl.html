@@ -12,7 +12,7 @@
                 </ul>
                 <h5>Saved Reports</h5>
                 <ul class="nav nav-pills nav-stacked" ng-repeat="reports in cachedReports">
-                    <li><a href="#" ng-click="runCachedReport($index)">{{reports.title}}</a></li>
+                    <li><a href="#" ng-click="runCachedReport($index);$hide()">{{reports.title}}</a></li>
                 </ul>
             </div>
 

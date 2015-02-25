@@ -21,10 +21,22 @@
 <div class="wrapper">
     <div class="container-fluid" ng-hide="resultData" id="landingDash">
         <h1>Reports Dashboard</h1>
-        <tl-spark-lines list-by-order-type="listByOrderType"></tl-spark-lines>
+
+
+
+        <div class="inline" id="sparkLines">
+            <h3>Sparkline Graph - 12 months totals</h3>
+            <ul class="nav nav-tabs">
+                <li ng-class="spkLineOrder ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('0')" href="#spkLineOrder">By Order Type</a></li>
+                <li ng-class="spkLineHospital ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('1')" href="#spkLineHospital">By Hospital</a></li>
+                <li ng-class="spkLineOrthotist ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('2')" href="#spkLineOrthotist">By Orthotist</a></li>
+            </ul>
+            <tl-spark-lines list-by-order-type="spkLineData"></tl-spark-lines>
+            </div>
+
         <div class="inline pull-right">
 
-            <h3>Percentage of Orders Completed Ontime</h3>
+            <h3>Percentage of Orders Completed Ontime By Type</h3>
 
             <div class="inlineNarrow gaugeDash" ng-repeat="items in listByOrderType track by $index">
                 <wj-radial-gauge
@@ -38,7 +50,7 @@
                     <wj-range min="{{kpi}}" max="100" color="rgba(100,255,100,.2)"></wj-range>
                     <wj-range min="{{items.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
                 </wj-radial-gauge>
-                <h6 style="text-align: center; white-space: nowrap">{{items.orderType}}</h6>
+                <h6 style="text-align: center; white-space: nowrap">{{items.item}}</h6>
 
             </div>
         </div>
@@ -77,43 +89,11 @@
         </div>
 
     <div id="reportDataWrapper" ng-show="resultData">
-        <div id="summaryReportData" ng-show="formObj.Summary=='Summary'">
-            <h3>Percentage of Orders Ontime</h3>
-            <h4>Report: {{reportTitle}}</h4>
-            <div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.orderData track by $index">
-                <wj-radial-gauge
-                        value="results.percentageOntime"
-                        min="0"
-                        max="100"
-                        start-angle="-30"
-                        sweep-angle="240"
-                        show-ranges="true">
-                    <wj-range wj-property="pointer" thickness="0.75"></wj-range>
-                    <wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>
-                    <wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
-                </wj-radial-gauge>
-                <h6 style="text-align: center; white-space: nowrap">{{results.orderType}}</h6>
-            </div>
-            <div class="inlineNarrow gaugeDash" ng-repeat="results in resultData.topData track by $index">
-                <wj-radial-gauge
-                        value="results.percentageOntime"
-                        min="0"
-                        max="100"
-                        start-angle="-30"
-                        sweep-angle="240"
-                        show-ranges="true">
-                    <wj-range wj-property="pointer" thickness="0.75"></wj-range>
-                    <wj-range min="75" max="100" color="rgba(100,255,100,.2)"></wj-range>
-                    <wj-range min="{{results.percentageOntime}}" max="100" color="rgba(255,255,100,.2)"></wj-range>
-                </wj-radial-gauge>
-                <h6 style="text-align: center; white-space: nowrap">{{results.item}}</h6>
-            </div>
-        </div>
-    </div>
 
-    <div ng-show="formObj.Summary=='All'" id="allReportData">
+    <div id="allReportData">
         <h4 ng-show="reportTitle">Report: {{reportTitle}}</h4>
         <div ng-repeat="results in resultData.topData track by $index" class="row">
+            <div ng-hide="results.total==0">
             <h3 style="text-align: center; white-space: nowrap">{{results.item}}</h3>
             <div class="col-lg-8">
                 <wj-flex-chart style="height:500px" items-source="results.dateData" binding-x="datekey"
@@ -130,9 +110,9 @@
                 </wj-flex-chart>
             </div>
             <div class="col-lg-4">
-                <wj-flex-pie style="height:500px" items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
+                <wj-flex-pie ng-hide="formObj.ReportType=='ByOrder'" style="height:500px" items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
             </div>
-
+</div>
         </div>
 
 

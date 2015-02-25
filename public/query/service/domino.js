@@ -8,7 +8,8 @@ app.factory('DominoFactory',function DominoFactory($http){
         postOptions:postOptions,
         runQueryAgent:runQueryAgent,
         getKeywordData:getKeywordData,
-        runCachedReport:runCachedReport
+        runCachedReport:runCachedReport,
+        runHomePageCachedReport:runHomePageCachedReport
     }
 
     function postOptions(optionsData){
@@ -35,6 +36,13 @@ app.factory('DominoFactory',function DominoFactory($http){
     }
 
     function runCachedReport(u){
+        return $http({
+            method: 'GET',
+            url:'http://31.49.243.186/'+u
+        });
+    }
+
+    function runHomePageCachedReport(u){
         return $http({
             method: 'GET',
             url:'http://31.49.243.186/'+u

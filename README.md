@@ -30,3 +30,11 @@ A default will be selected if the value is missing / blank
 <tr><td>Summary</td><td>Determines how much information is returned.  Does not speed up the report process other than reducing the size of the JSON data</td><td><ul><li>blank(default) everthing is returned</li><li>top = only return the top level summary information</li><li>order = return the order level information (only applicable for Hospitals / Orthothist</li></ul></td></tr>
 
 </table>
+
+
+# To do
+Report title
+Expand columns if hiding pie chart
+Form validation - validate against picking the same two values
+Lose 30 days option
+

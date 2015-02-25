@@ -18,6 +18,9 @@ var queryApp = angular.module("queryApp", [
         // data context
 
         $scope.dateAlertMessage = false;
+        $scope.spkLineOrder==true;
+        $scope.spkLineHospital==false;
+        $scope.spkLineOrthotist==false;
         $scope.loadData = function () {
             DataFactory.loadData().then(function success(result) {
                 var onTime = 0;
@@ -27,7 +30,7 @@ var queryApp = angular.module("queryApp", [
                     total += result.data[i].Total;
                 }
                 // expose data as a CollectionView to get events
-                $scope.listByOrderType = result.data.orderData;
+                //$scope.listByOrderType = result.data.orderData;
                 $scope.listAll = new wijmo.collections.CollectionView(result.data.orderData);
                 $scope.kpi = result.data.kpi;
 
@@ -43,22 +46,56 @@ var queryApp = angular.module("queryApp", [
                 $scope.keywordsOrthotists = result.data.orthotists;
                 $scope.keywordsReportMonths = result.data.reportMonths;
                 $scope.cachedReports = result.data.cachedReports;
+                console.log(result.data.cachedReports)
+                for (var i = 0; i < result.data.cachedReports.length; i++) {
+                    if (result.data.cachedReports[i].homepage == true) {
+                        $scope.runHomePageCachedReport([i])
+                    }
+                }
             })
         }
 
         $scope.runCachedReport = function (i) {
             $scope.clearResult();
             DominoFactory.runCachedReport($scope.cachedReports[i].url).then(function success(result) {
-                console.log($scope.cachedReports[i]);
-                $scope.reportTitle=$scope.cachedReports[i].title;
-                if($scope.cachedReports[i].summary='All'){
-                    $scope.formObj.Summary='All';
-                }else{
-                    $scope.formObj.Summary='Summary';
-                }
-                $scope.resultData=result.data;
+                $scope.reportTitle = $scope.cachedReports[i].title;
+                $scope.resultData = result.data;
             });
         }
+
+        $scope.runHomePageCachedReport = function (i) {
+            DominoFactory.runHomePageCachedReport($scope.cachedReports[i].url).then(function success(result) {
+                $scope.reportTitle = $scope.cachedReports[i].title;
+                if($scope.cachedReports[i].reportType=='ByOrder'){
+                    $scope.listByOrderType=result.data.topData;
+                }else if($scope.cachedReports[i].reportType=='ByHospital'){
+                    $scope.listByHospital=result.data.topData;
+                }else if($scope.cachedReports[i].reportType=='ByOrthotist'){
+                    $scope.listByOrthotist=result.data.topData;
+                }
+                $scope.spkLineData=$scope.listByOrderType;
+                $scope.spkLineOrder=true;
+            });
+        }
+
+        $scope.spkLineToggle = function(i){
+            $scope.spkLineOrder=false;
+            $scope.spkLineHospital=false;
+            $scope.spkLineOrthotist=false;
+            if(i==0){
+                $scope.spkLineData=$scope.listByOrderType;
+                $scope.spkLineOrder=true;
+            }else if(i==1){
+                $scope.spkLineData=$scope.listByHospital;
+                $scope.spkLineHospital=true;
+
+            }else if(i==2){
+                $scope.spkLineData=$scope.listByOrthotist;
+                $scope.spkLineOrthotist=true;
+            }
+
+        };
+
         $scope.clearResult = function () {
             $scope.resultData = "";
             $scope.formObj = {};
@@ -67,7 +104,7 @@ var queryApp = angular.module("queryApp", [
 
         $scope.setDefaults = function () {
             $scope.formObj = {}
-            $scope.formObj.Summary = "Summary";
+            $scope.formObj.Summary = "All";
             $scope.formObj.ReportType = "ByOrder";
             $scope.formObj.DateType = "Month";
         }
@@ -77,16 +114,20 @@ var queryApp = angular.module("queryApp", [
 
 
         $scope.postQuery = function () {
-            $scope.dateAlertMessage=false;
-            if($scope.formObj.StartDate && !$scope.formObj.EndDate){
-                $scope.dateAlertMessage=true;
-                $timeout(function () { $scope.dateAlertMessage = false; }, 3000);
+            $scope.dateAlertMessage = false;
+            if ($scope.formObj.StartDate && !$scope.formObj.EndDate) {
+                $scope.dateAlertMessage = true;
+                $timeout(function () {
+                    $scope.dateAlertMessage = false;
+                }, 3000);
                 $scope.showFilterForm();
                 return false;
             }
-            if(!$scope.formObj.StartDate && $scope.formObj.EndDate){
-                $scope.dateAlertMessage=true;
-                $timeout(function () { $scope.dateAlertMessage = false; }, 3000);
+            if (!$scope.formObj.StartDate && $scope.formObj.EndDate) {
+                $scope.dateAlertMessage = true;
+                $timeout(function () {
+                    $scope.dateAlertMessage = false;
+                }, 3000);
                 $scope.showFilterForm();
                 return false;
             }
@@ -101,6 +142,9 @@ var queryApp = angular.module("queryApp", [
 
             if ($scope.formObj.TopLevelFilterList) {
                 $scope.formObj.TopLevelFilterListImp = $scope.formObj.TopLevelFilterList.join("@")
+            }
+            if ($scope.formObj.AdditionalTopLevelFilterList) {
+                $scope.formObj.AdditionalTopLevelFilterListImp = $scope.formObj.AdditionalTopLevelFilterList.join("@")
             }
 
             DominoFactory.postOptions($scope.formObj).then(function (success) {
