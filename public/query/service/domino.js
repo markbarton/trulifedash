@@ -15,7 +15,7 @@ app.factory('DominoFactory',function DominoFactory($http){
     function postOptions(optionsData){
         return $http({
             method: 'POST',
-            url: 'http://31.49.243.186/org/orderconfig.nsf/DashboardOptions?createdocument',
+            url: '/org/orderconfig.nsf/DashboardOptions?createdocument',
             data:optionsData
         });
     }
@@ -23,7 +23,7 @@ app.factory('DominoFactory',function DominoFactory($http){
     function runQueryAgent(unid){
         return $http({
             method: 'GET',
-            url:'http://31.49.243.186/org/orderconfig.nsf/Report2?openagent&unid='+unid
+            url:'/org/orderconfig.nsf/Report2?openagent&unid='+unid
         });
     }
 
@@ -31,21 +31,21 @@ app.factory('DominoFactory',function DominoFactory($http){
     function getKeywordData(){
         return $http({
             method: 'GET',
-            url:'http://31.49.243.186/org/orderconfig.nsf/DashboardKeywordData'
+            url:'/org/orderconfig.nsf/DashboardKeywordData'
         });
     }
 
     function runCachedReport(u){
         return $http({
             method: 'GET',
-            url:'http://31.49.243.186/'+u
+            url:u
         });
     }
 
     function runHomePageCachedReport(u){
         return $http({
             method: 'GET',
-            url:'http://31.49.243.186/'+u
+            url:u
         });
     }
 
