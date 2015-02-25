@@ -18,6 +18,7 @@ var queryApp = angular.module("queryApp", [
         // data context
 
         $scope.dateAlertMessage = false;
+        $scope.typeAlertMessage = false;
         $scope.spkLineOrder==true;
         $scope.spkLineHospital==false;
         $scope.spkLineOrthotist==false;
@@ -46,7 +47,6 @@ var queryApp = angular.module("queryApp", [
                 $scope.keywordsOrthotists = result.data.orthotists;
                 $scope.keywordsReportMonths = result.data.reportMonths;
                 $scope.cachedReports = result.data.cachedReports;
-                console.log(result.data.cachedReports)
                 for (var i = 0; i < result.data.cachedReports.length; i++) {
                     if (result.data.cachedReports[i].homepage == true) {
                         $scope.runHomePageCachedReport([i])
@@ -119,7 +119,7 @@ var queryApp = angular.module("queryApp", [
                 $scope.dateAlertMessage = true;
                 $timeout(function () {
                     $scope.dateAlertMessage = false;
-                }, 3000);
+                }, 3500);
                 $scope.showFilterForm();
                 return false;
             }
@@ -127,7 +127,15 @@ var queryApp = angular.module("queryApp", [
                 $scope.dateAlertMessage = true;
                 $timeout(function () {
                     $scope.dateAlertMessage = false;
-                }, 3000);
+                }, 3500);
+                $scope.showFilterForm();
+                return false;
+            }
+            if ($scope.formObj.AdditionalReportType == $scope.formObj.ReportType) {
+                $scope.typeAlertMessage = true;
+                $timeout(function () {
+                    $scope.typeAlertMessage = false;
+                }, 3500);
                 $scope.showFilterForm();
                 return false;
             }
@@ -149,6 +157,8 @@ var queryApp = angular.module("queryApp", [
 
             DominoFactory.postOptions($scope.formObj).then(function (success) {
                 $scope.resultData = "";
+                $scope.reportTitle = "";
+                console.log($scope.formObj)
                 $scope.resultData = success.data;
             })
         }

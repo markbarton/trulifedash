@@ -33,8 +33,6 @@ A default will be selected if the value is missing / blank
 
 
 # To do
-Report title
-Expand columns if hiding pie chart
-Form validation - validate against picking the same two values
-Lose 30 days option
+Change angular gauges as we change sparklines
+
 

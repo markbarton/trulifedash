@@ -21,9 +21,6 @@
 <div class="wrapper">
     <div class="container-fluid" ng-hide="resultData" id="landingDash">
         <h1>Reports Dashboard</h1>
-
-
-
         <div class="inline" id="sparkLines">
             <h3>Sparkline Graph - 12 months totals</h3>
             <ul class="nav nav-tabs">
@@ -74,16 +71,20 @@
 
         </div>
     </div>
-    <div class="container-fluid" ng-show="resultData" id="queryDash">
+    <div class="container-fluid" ng-show="resultData" id="queryDash" ng-cloak>
           <div ng-hide="reportTitle" class="well"><strong>Your report is showing you:</strong>
-
-                <span >{{formObj.Summary}} data </span>
-                <span ng-show="formObj.ReportType=='ByOrder'" >by order type</span>
-                <span ng-show="formObj.ReportType=='ByHospital'" >by hospital</span>
-                <span ng-show="formObj.ReportType=='ByOrthotist'" >by orthotist</span>
+                <span ng-show="formObj.ReportType=='ByOrder'" >Data by order type</span>
+                <span ng-show="formObj.ReportType=='ByHospital'" >Data by hospital</span>
+                <span ng-show="formObj.ReportType=='ByOrthotist'" >Data by orthotist</span>
+              <span ng-show="formObj.TopLevelFilterList.length >= 1" >for (<span ng-repeat="f in formObj.TopLevelFilterList"><span ng-if="!$last">{{f}}, </span><span ng-if="$last">{{f}}</span></span>)</span>
                 <span ng-show="formObj.DateType=='Month' && formObj.StartDate" >for the date range {{formObj.StartDate}} to {{formObj.EndDate}}</span>
                 <span ng-show="formObj.DateType=='Month' && !formObj.StartDate" >for the date range 'all dates'</span>
-                <span ng-show="formObj.DateType=='30Days'" >for the last 30 days</span>
+                <span ng-show="formObj.DateType=='30Days'" >for the last 30 days</span>.
+
+              <span ng-show="formObj.AdditionalReportType=='ByOrder'" >We are applying a secondry filter of order type</span>
+              <span ng-show="formObj.AdditionalReportType=='ByHospital'" >We are applying a secondry filter of by hospital</span>
+              <span ng-show="formObj.AdditionalReportType=='ByOrthotist'" >A secondry filter has been apllied of by orthotist</span>
+              <span ng-show="formObj.AdditionalTopLevelFilterList.length >= 1" >for (<span ng-repeat="f in formObj.AdditionalTopLevelFilterList"><span ng-if="!$last">{{f}}, </span><span ng-if="$last">{{f}}</span></span>)</span>
             </div>
             <span></span>
         </div>
@@ -92,10 +93,11 @@
 
     <div id="allReportData">
         <h4 ng-show="reportTitle">Report: {{reportTitle}}</h4>
+        <div ng-show="resultData.total==0" class="alert alert-warning"><h4 >There were no results for the filter you have applied.</h4></div>
         <div ng-repeat="results in resultData.topData track by $index" class="row">
             <div ng-hide="results.total==0">
             <h3 style="text-align: center; white-space: nowrap">{{results.item}}</h3>
-            <div class="col-lg-8">
+               <div ng-class="formObj.ReportType=='ByOrder' ? 'col-lg-12' : 'col-lg-8'">
                 <wj-flex-chart style="height:500px" items-source="results.dateData" binding-x="datekey"
                                selection-mode="Point" stacking="Stacked">
                     <wj-flex-chart-axis wj-property="axisY" max="100"></wj-flex-chart-axis>
@@ -109,8 +111,8 @@
                     <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
                 </wj-flex-chart>
             </div>
-            <div class="col-lg-4">
-                <wj-flex-pie ng-hide="formObj.ReportType=='ByOrder'" style="height:500px" items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
+            <div ng-class="formObj.ReportType=='ByOrder' ? 'hide' : 'col-lg-4'">
+                <wj-flex-pie style="height:500px" items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
             </div>
 </div>
         </div>
