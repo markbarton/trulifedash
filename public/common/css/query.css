@@ -122,6 +122,7 @@ div.inlineNarrow {
     padding: 5px 10px 5px 10px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    cursor: pointer;
 }
 
 .selected {

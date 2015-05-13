@@ -3,7 +3,7 @@
  */
 var app=angular.module("queryApp")
 app.factory('DominoFactory',function DominoFactory($http){
-    var baseURL= 'http://217.43.169.219/';
+    var baseURL= 'http://217.43.169.219';
     return{
         postOptions:postOptions,
         runQueryAgent:runQueryAgent,
@@ -15,7 +15,7 @@ app.factory('DominoFactory',function DominoFactory($http){
     function postOptions(optionsData){
         return $http({
             method: 'POST',
-            url: baseURL+'org/orderconfig.nsf/DashboardOptions?createdocument',
+            url: baseURL+'/org/orderconfig.nsf/DashboardOptions?createdocument',
             data:optionsData
         });
     }
@@ -23,7 +23,7 @@ app.factory('DominoFactory',function DominoFactory($http){
     function runQueryAgent(unid){
         return $http({
             method: 'GET',
-            url:baseURL+'org/orderconfig.nsf/Report2?openagent&unid='+unid
+            url:baseURL+'/org/orderconfig.nsf/Report2?openagent&unid='+unid
         });
     }
 
@@ -31,21 +31,21 @@ app.factory('DominoFactory',function DominoFactory($http){
     function getKeywordData(){
         return $http({
             method: 'GET',
-            url:baseURL+'org/orderconfig.nsf/DashboardKeywordData'
+            url:baseURL+'/org/orderconfig.nsf/DashboardKeywordData'
         });
     }
 
     function runCachedReport(u){
         return $http({
             method: 'GET',
-            url:baseURL+'/'+u
+            url:baseURL+u
         });
     }
 
     function runHomePageCachedReport(u){
         return $http({
             method: 'GET',
-            url:baseURL+'/'+u
+            url:baseURL+u
         });
     }
 
