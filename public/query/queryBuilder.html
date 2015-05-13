@@ -21,18 +21,23 @@
 <div class="wrapper">
     <div class="container-fluid" ng-hide="resultData" id="landingDash">
         <h1>Reports Dashboard</h1>
+
         <div class="inline" id="sparkLines">
             <h3>Sparkline Graph - 12 months totals</h3>
             <ul class="nav nav-tabs">
-                <li ng-class="spkLineOrder ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('0')" href="#spkLineOrder">By Order Type</a></li>
-                <li ng-class="spkLineHospital ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('1')" href="#spkLineHospital">By Hospital</a></li>
-                <li ng-class="spkLineOrthotist ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('2')" href="#spkLineOrthotist">By Orthotist</a></li>
+                <li ng-class="spkLineOrder ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('0')"
+                                                               href="#spkLineOrder">By Order Type</a></li>
+                <li ng-class="spkLineHospital ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('1')"
+                                                                  href="#spkLineHospital">By Hospital</a></li>
+                <li ng-class="spkLineOrthotist ? 'active' : ''"><a data-toggle="tab" ng-click="spkLineToggle('2')"
+                                                                   href="#spkLineOrthotist">By Orthotist</a></li>
             </ul>
             <tl-spark-lines list-by-order-type="spkLineData"></tl-spark-lines>
-            </div>
+        </div>
 
         <div class="inline pull-right">
             <h3>Percentage of Orders Completed Ontime By Type</h3>
+
             <div class="inlineNarrow gaugeDash" ng-repeat="items in listByOrderType track by $index">
                 <wj-radial-gauge
                         value="items.percentageOntime"
@@ -70,72 +75,110 @@
         </div>
     </div>
     <div class="container-fluid" ng-show="resultData" id="queryDash" ng-cloak>
-          <div ng-hide="reportTitle" class="well"><strong>Your report is showing you:</strong>
-                <span ng-show="formObj.ReportType=='ByOrder'" >Data by order type</span>
-                <span ng-show="formObj.ReportType=='ByHospital'" >Data by hospital</span>
-                <span ng-show="formObj.ReportType=='ByOrthotist'" >Data by orthotist</span>
-              <span ng-show="formObj.TopLevelFilterList.length >= 1" >for (<span ng-repeat="f in formObj.TopLevelFilterList"><span ng-if="!$last">{{f}}, </span><span ng-if="$last">{{f}}</span></span>)</span>
-                <span ng-show="formObj.DateType=='Month' && formObj.StartDate" >for the date range {{formObj.StartDate}} to {{formObj.EndDate}}</span>
-                <span ng-show="formObj.DateType=='Month' && !formObj.StartDate" >for the date range 'all dates'</span>
-                <span ng-show="formObj.DateType=='30Days'" >for the last 30 days</span>.
+        <div ng-hide="reportTitle" class="well"><strong>Your report is showing you:</strong>
+            <span ng-show="formObj.ReportType=='ByOrder'">Data by order type</span>
+            <span ng-show="formObj.ReportType=='ByHospital'">Data by hospital</span>
+            <span ng-show="formObj.ReportType=='ByOrthotist'">Data by orthotist</span>
+            <span ng-show="formObj.TopLevelFilterList.length >= 1">for (<span
+                    ng-repeat="f in formObj.TopLevelFilterList"><span ng-if="!$last">{{f}}, </span><span ng-if="$last">{{f}}</span></span>)</span>
+            <span ng-show="formObj.DateType=='Month' && formObj.StartDate">for the date range {{formObj.StartDate}} to {{formObj.EndDate}}</span>
+            <span ng-show="formObj.DateType=='Month' && !formObj.StartDate">for the date range 'all dates'</span>
+            <span ng-show="formObj.DateType=='30Days'">for the last 30 days</span>.
 
-              <span ng-show="formObj.AdditionalReportType=='ByOrder'" >We are applying a secondry filter of order type</span>
-              <span ng-show="formObj.AdditionalReportType=='ByHospital'" >We are applying a secondry filter of by hospital</span>
-              <span ng-show="formObj.AdditionalReportType=='ByOrthotist'" >A secondry filter has been apllied of by orthotist</span>
-              <span ng-show="formObj.AdditionalTopLevelFilterList.length >= 1" >for (<span ng-repeat="f in formObj.AdditionalTopLevelFilterList"><span ng-if="!$last">{{f}}, </span><span ng-if="$last">{{f}}</span></span>)</span>
-            </div>
-            <span></span>
+            <span ng-show="formObj.AdditionalReportType=='ByOrder'">We are applying a secondry filter of order type</span>
+            <span ng-show="formObj.AdditionalReportType=='ByHospital'">We are applying a secondry filter of by hospital</span>
+            <span ng-show="formObj.AdditionalReportType=='ByOrthotist'">A secondry filter has been apllied of by orthotist</span>
+            <span ng-show="formObj.AdditionalTopLevelFilterList.length >= 1">for (<span
+                    ng-repeat="f in formObj.AdditionalTopLevelFilterList"><span ng-if="!$last">{{f}}, </span><span
+                    ng-if="$last">{{f}}</span></span>)</span>
         </div>
+        <span></span>
+    </div>
 
     <div id="reportDataWrapper" ng-show="resultData">
 
-    <div id="allReportData">
-        <h4 ng-show="reportTitle">Report: {{reportTitle}}</h4>
-        <div ng-show="resultData.total==0" class="alert alert-warning"><h4 >There were no results for the filter you have applied.</h4></div>
-        <div ng-repeat="results in resultData.topData track by $index" class="row">
-            <div ng-hide="results.total==0">
-            <h3 style="text-align: center; white-space: nowrap">{{results.item}}</h3>
-               <div ng-class="formObj.ReportType=='ByOrder' ? 'col-lg-12' : 'col-lg-8'">
-                <wj-flex-chart style="height:500px" items-source="results.dateData" binding-x="datekey"
-                               selection-mode="Point" stacking="Stacked">
-                    <wj-flex-chart-axis wj-property="axisY" max="100"></wj-flex-chart-axis>
-                    <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
-                    <wj-flex-chart-series binding="percentageOnTime"
-                                          ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
-                                          name="Percentage On time"></wj-flex-chart-series>
-                    <wj-flex-chart-series binding="percentageKPI" chart-type="LineSymbols"
-                                          ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
-                                          name="Target"></wj-flex-chart-series>
-                    <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
-                </wj-flex-chart>
+        <div id="allReportData">
+            <h4 ng-show="reportTitle">Report: {{reportTitle}}</h4>
+
+            <div ng-show="resultData.total==0" class="alert alert-warning"><h4>There were no results for the filter you
+                have applied.</h4></div>
+            <div ng-repeat="results in resultData.topData track by $index" class="row">
+                <div ng-hide="results.total==0">
+                    <h3 style="text-align: center; white-space: nowrap">{{results.item}}</h3>
+
+                    <div class="col-lg-8">
+                        <wj-flex-chart style="height:500px" items-source="results.dateData" binding-x="datekey"
+                                       selection-mode="Point" stacking="Stacked">
+                            <wj-flex-chart-axis wj-property="axisY" max="100"></wj-flex-chart-axis>
+                            <wj-flex-chart-axis wj-property="axisX" label-angle="90"></wj-flex-chart-axis>
+                            <wj-flex-chart-series binding="percentageOnTime"
+                                                  ng-attr-style="{fill:'#009999', stroke:'#009999', 'stroke-width': '1'}"
+                                                  name="Percentage On time"></wj-flex-chart-series>
+                            <wj-flex-chart-series binding="percentageKPI" chart-type="LineSymbols"
+                                                  ng-attr-style="{fill:'#c00000', stroke:'#c00000', 'stroke-width': '1'}"
+                                                  name="Target"></wj-flex-chart-series>
+                            <wj-flex-chart-legend position="Right"></wj-flex-chart-legend>
+                        </wj-flex-chart>
+                    </div>
+
+                    <div ng-class="formObj.ReportType=='ByOrder' ? 'hide' : 'col-lg-4'">
+                        <div class="tabgroup" ng-init="tab=1">
+                            <div class="tab" ng-class="{selected: tab==1}" ng-click="tab = 1">By Order</div>
+                            <div class="tab" ng-class="{selected: tab==2}" ng-click="tab = 2">Totals</div>
+                        </div>
+
+                        <div ng-show="tab == 1">
+                            <wj-flex-pie style="height:500px" items-source="results.orderData" binding="total"
+                                         binding-name="orderType"></wj-flex-pie>
+                        </div>
+
+                        <div class="tabtotals" ng-show="tab == 2">
+                            <table id="totalstable" class="table-bordered table-striped totalstable">
+                                <thead><th>Month</th><th>Total</th></thead>
+                                <tbody><tr ng-repeat="x in results.dateData">
+                                    <td>{{ x.datekey }}</td>
+                                    <td>{{ x.total }}</td>
+                                </tr></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-class="formObj.ReportType!='ByOrder' ? 'hide' : 'col-lg-4'">
+
+                        <div class="tabtotalslower">
+                            <table class="table-bordered table-striped totalstable">
+                                <thead><th>Month</th><th>Total</th></thead>
+                                <tbody><tr ng-repeat="x in results.dateData">
+                                    <td>{{ x.datekey }}</td>
+                                    <td>{{ x.total }}</td>
+                                </tr></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+
             </div>
-            <div ng-class="formObj.ReportType=='ByOrder' ? 'hide' : 'col-lg-4'">
-                <wj-flex-pie style="height:500px" items-source="results.orderData" binding="total" binding-name="orderType"></wj-flex-pie>
-            </div>
-</div>
         </div>
-
-
     </div>
-</div>
-</div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-<script src="//code.angularjs.org/1.3.8/angular-animate.min.js" data-semver="1.3.8"></script>
-<script src="//code.angularjs.org/1.3.8/angular-sanitize.min.js" data-semver="1.3.8"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.tpl.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.3.8/angular-animate.min.js" data-semver="1.3.8"></script>
+    <script src="//code.angularjs.org/1.3.8/angular-sanitize.min.js" data-semver="1.3.8"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.tpl.min.js"></script>
 
-<script src="../vendor/wijmo.js" type="text/javascript"></script>
-<script src="../vendor/wijmo.chart.min.js" type="text/javascript"></script>
-<script src="../vendor/wijmo.gauge.min.js" type="text/javascript"></script>
-<script src="../vendor/wijmo.angular.min.js" type="text/javascript"></script>
-<script src="../vendor/loading-bar.js" type="text/javascript"></script>
-<script src="../query/app.js"></script>
-<script src="../query/service/domino.js"></script>
-<script src="../query/directives/tlSparkLines.js"></script>
-<script src="../vendor/select.js"></script>
-<script src="../common/directives/tfNavTabs.js"></script>
+    <script src="../vendor/wijmo.js" type="text/javascript"></script>
+    <script src="../vendor/wijmo.chart.min.js" type="text/javascript"></script>
+    <script src="../vendor/wijmo.gauge.min.js" type="text/javascript"></script>
+    <script src="../vendor/wijmo.angular.min.js" type="text/javascript"></script>
+    <script src="../vendor/loading-bar.js" type="text/javascript"></script>
+    <script src="../query/app.js"></script>
+    <script src="../query/service/domino.js"></script>
+    <script src="../query/directives/tlSparkLines.js"></script>
+    <script src="../vendor/select.js"></script>
+    <script src="../common/directives/tfNavTabs.js"></script>
 
 </body>
 </html>
